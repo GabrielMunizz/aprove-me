@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AccountReceivable {
+model AccountPayable {
   id           String   @id @default(uuid())
   value        Float
   emissionDate DateTime
@@ -29,5 +29,5 @@ model Assignor {
   phone       String
   name        String
   deleted     Boolean
-  receivables AccountReceivable[]
+  payables AccountPayable[]
 }

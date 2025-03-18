@@ -1,0 +1,8 @@
+// find a payable
+
+GET http://localhost:3000/integrations/payable/1
+
+// find a assignor
+
+GET http://localhost:3000/integrations/assignor/1
+
