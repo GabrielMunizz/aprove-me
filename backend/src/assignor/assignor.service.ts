@@ -107,6 +107,16 @@ export class AssignorService {
     }
   }
 
+  async listDeletedAssignors() {
+    const deletedAssignors = await this.prisma.assignor.findMany({
+      where: { isDeleted: true },
+    });
+
+    console.log(deletedAssignors);
+
+    return deletedAssignors;
+  }
+
   async findDeletedAssignor(id: string) {
     if (!id) {
       throw new HttpException('É necessário informar um ID', 400);

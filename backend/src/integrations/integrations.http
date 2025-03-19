@@ -1,6 +1,6 @@
 // create payable
 
-PATCH http://localhost:3000/integrations/assignor/049551eb-ca20-4c8d-acf7-38675649efc2
+GET http://localhost:3000/integrations/assignor/recover/all
 
 Content-Type: application/json
 
