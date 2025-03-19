@@ -14,13 +14,14 @@ import { PayableService } from 'src/payable/payable.service';
 import { AssignorService } from 'src/assignor/assignor.service';
 import { CreatePayableDto } from 'src/payable/dto/create-payable.dto';
 import { CreateAssignorDto } from 'src/assignor/dto/create-assignor.dto';
+import { UpdateAssignorDto } from 'src/assignor/dto/update-assignor.dto';
 
 @Controller('integrations')
 export class IntegrationsController {
   constructor(
     private readonly integrationsService: IntegrationsService,
-    private readonly payableService: PayableService, //injects payableService into integrations.controller
-    private readonly assignorService: AssignorService, //injects assignorService into integrations.controller
+    private readonly payableService: PayableService,
+    private readonly assignorService: AssignorService,
   ) {}
 
   @Post('payable')
@@ -44,13 +45,21 @@ export class IntegrationsController {
   }
 
   @Get('assignor')
-  async findAllAssignor() {
+  async findAllAssignors() {
     return await this.assignorService.findAll();
   }
 
   @Get('assignor/:id')
-  findOneAssignor(@Param('id') id: string) {
-    return this.assignorService.findOne(id);
+  async findOneAssignor(@Param('id') id: string) {
+    return await this.assignorService.findOne(id);
+  }
+
+  @Patch('assignor/:id')
+  async updateAssignor(
+    @Param('id') id: string,
+    @Body() updateAssignorDto: UpdateAssignorDto,
+  ) {
+    return await this.assignorService.update(id, updateAssignorDto);
   }
 
   @Post()

@@ -66,8 +66,27 @@ export class AssignorService {
     }
   }
 
-  update(id: string, updateAssignorDto: UpdateAssignorDto) {
-    return `This action updates a #${id} assignor`;
+  async update(id: string, updateAssignorDto: UpdateAssignorDto) {
+    if (!id) {
+      return { message: 'É necessário informar um ID' };
+    }
+
+    try {
+      const foundAssignor = await this.findOne(id);
+      if (!foundAssignor) {
+        return { message: 'Cedente não encontrado' };
+      }
+
+      const updatedAssignor = await this.prisma.assignor.update({
+        where: { id },
+        data: updateAssignorDto,
+      });
+
+      return updatedAssignor;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Falha ao alterar informações do cedente');
+    }
   }
 
   async remove(id: string): Promise<MessageType> {

@@ -1,15 +1,15 @@
 // create payable
 
-GET http://localhost:3000/integrations/assignor/049551eb-ca20-4c8d-acf7-38675649efc2
+PATCH http://localhost:3000/integrations/assignor/049551eb-ca20-4c8d-acf7-38675649efc2
 
-# Content-Type: application/json
+Content-Type: application/json
 
-# {
-#   "document": "13276542706",
-#   "email": "teste@teste.com",
-#   "phone": "984863437",
-#   "name": "Gabriel Muniz" 
-# }
+{
+  "document": "13276542706",
+  "email": "teste@teste.com",
+  "phone": "984863437",
+  "name": "Gabriel Muniz Ferreira" 
+}
 
 GET  http://localhost:3000/integrations/payable
 
