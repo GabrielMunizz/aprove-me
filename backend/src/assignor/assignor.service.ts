@@ -128,7 +128,7 @@ export class AssignorService {
     try {
       await this.prisma.assignor.update({
         where: { id },
-        data: { ...foundAssignor, isDeleted: true },
+        data: { ...foundAssignor, isDeleted: false },
       });
 
       return { message: 'Usuário recuperado com sucesso!' };

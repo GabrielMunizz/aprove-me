@@ -54,12 +54,22 @@ export class IntegrationsController {
     return await this.assignorService.findOne(id);
   }
 
+  @Get('assignor/recover/:id')
+  async findDeletedAssignor(@Param('id') id: string) {
+    return await this.assignorService.findDeletedAssignor(id);
+  }
+
   @Patch('assignor/:id')
   async updateAssignor(
     @Param('id') id: string,
     @Body() updateAssignorDto: UpdateAssignorDto,
   ) {
     return await this.assignorService.update(id, updateAssignorDto);
+  }
+
+  @Patch('assignor/recover/:id')
+  async recoverAssignor(@Param('id') id: string) {
+    return await this.assignorService.recoverAssignor(id);
   }
 
   @Delete('assignor/:id')
