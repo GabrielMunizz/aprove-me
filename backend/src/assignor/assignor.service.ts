@@ -55,7 +55,6 @@ export class AssignorService {
       const foundAssignor = await this.prisma.assignor.findUnique({
         where: { id, isDeleted: false },
       });
-      console.log('ISFOUND? --->', foundAssignor);
 
       if (!foundAssignor) {
         throw new HttpException('Cedente não encontrado', 404);
@@ -73,8 +72,8 @@ export class AssignorService {
       throw new HttpException('É necessário informar um ID', 400);
     }
 
+    const foundAssignor = await this.findOne(id);
     try {
-      const foundAssignor = await this.findOne(id);
       if (foundAssignor) {
         const updatedAssignor = await this.prisma.assignor.update({
           where: { id },
@@ -94,12 +93,8 @@ export class AssignorService {
       throw new HttpException('É necessário informar um ID', 400);
     }
 
+    const foundAssignor = await this.findOne(id);
     try {
-      const foundAssignor = await this.findOne(id);
-      if (!foundAssignor) {
-        return { message: 'Cedente não encontrado' };
-      }
-
       await this.prisma.assignor.update({
         where: { id },
         data: { ...foundAssignor, isDeleted: true },
@@ -109,6 +104,37 @@ export class AssignorService {
     } catch (error) {
       console.error(error);
       throw new HttpException('Falha ao deletar cedente', 500);
+    }
+  }
+
+  async findDeletedAssignor(id: string) {
+    if (!id) {
+      throw new HttpException('É necessário informar um ID', 400);
+    }
+    try {
+      const foundAssignor = await this.prisma.assignor.findUnique({
+        where: { id, isDeleted: true },
+      });
+
+      return foundAssignor;
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Falha ao encontrar cedente', 500);
+    }
+  }
+
+  async recoverAssignor(id: string): Promise<MessageType> {
+    const foundAssignor = await this.findDeletedAssignor(id);
+    try {
+      await this.prisma.assignor.update({
+        where: { id },
+        data: { ...foundAssignor, isDeleted: true },
+      });
+
+      return { message: 'Usuário recuperado com sucesso!' };
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Falha ao recuperar cedente', 500);
     }
   }
 }
