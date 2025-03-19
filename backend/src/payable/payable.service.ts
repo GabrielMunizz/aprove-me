@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreatePayableDto } from './dto/create-payable.dto';
-// import { UpdatePayableDto } from './dto/update-payable.dto';
+import { UpdatePayableDto } from './dto/update-payable.dto';
 import { PrismaService } from 'src/prisma_service/prisma.service';
 import { AccountPayable } from '@prisma/client';
+import { MessageType } from 'types/MessageType';
 
 @Injectable()
 export class PayableService {
@@ -42,7 +43,7 @@ export class PayableService {
   async findOne(id: string): Promise<AccountPayable | null> {
     try {
       const payable = await this.prisma.accountPayable.findUnique({
-        where: { id },
+        where: { id, isDeleted: false },
       });
 
       return payable;
@@ -52,9 +53,26 @@ export class PayableService {
     }
   }
 
-  // update(id: number, updatePayableDto: UpdatePayableDto) {
-  //   return `This action updates a #${id} payable`;
-  // }
+  async update(id: string, updatePayableDto: UpdatePayableDto) {
+    if (!id) {
+      throw new HttpException('É necessário informar um ID', 400);
+    }
+
+    const foundPayable = await this.findOne(id);
+    try {
+      if (foundPayable) {
+        const updatedPayable = await this.prisma.accountPayable.update({
+          where: { id },
+          data: { ...updatePayableDto, isDeleted: false },
+        });
+
+        return updatedPayable;
+      }
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Falha ao alterar informações do recebível', 500);
+    }
+  }
 
   async remove(id: string) {
     try {
@@ -73,6 +91,45 @@ export class PayableService {
     } catch (error) {
       console.error(error);
       throw new Error('Erro ao deletar recebível.');
+    }
+  }
+
+  async listDeletedPayables() {
+    const deletedPayables = await this.prisma.accountPayable.findMany({
+      where: { isDeleted: true },
+    });
+
+    return deletedPayables;
+  }
+
+  async findDeletedPayable(id: string) {
+    if (!id) {
+      throw new HttpException('É necessário informar um ID', 400);
+    }
+    try {
+      const foundPayable = await this.prisma.accountPayable.findUnique({
+        where: { id, isDeleted: true },
+      });
+
+      return foundPayable;
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Falha ao encontrar recebível', 500);
+    }
+  }
+
+  async recoverPayable(id: string): Promise<MessageType> {
+    const foundPayable = await this.findDeletedPayable(id);
+    try {
+      await this.prisma.accountPayable.update({
+        where: { id },
+        data: { ...foundPayable, isDeleted: false },
+      });
+
+      return { message: 'Recebível recuperado com sucesso!' };
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Falha ao recuperar recebível', 500);
     }
   }
 }
