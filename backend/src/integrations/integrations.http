@@ -1,17 +1,20 @@
 // create payable
 
-POST http://localhost:3000/integrations/assignor
-Content-Type: application/json
+GET http://localhost:3000/integrations/assignor/049551eb-ca20-4c8d-acf7-38675649efc2
 
-{
-  "document": "13276542706",
-  "email": "teste@teste.com",
-  "phone": "984863437",
-  "name": "Gabriel Muniz" 
-}
+# Content-Type: application/json
 
 # {
-#   "value": 135.50,
-#   "emissionDate": "2020-04-09T00:00:00.000Z",
-#   "assignorId": "123e4567-e89b-12d3-a456-426614174000"
+#   "document": "13276542706",
+#   "email": "teste@teste.com",
+#   "phone": "984863437",
+#   "name": "Gabriel Muniz" 
 # }
+
+GET  http://localhost:3000/integrations/payable
+
+{
+  "value": 135.50,
+  "emissionDate": "2020-04-09T00:00:00.000Z",
+  "assignorId": "049551eb-ca20-4c8d-acf7-38675649efc2"
+}

@@ -39,8 +39,13 @@ export class IntegrationsController {
   }
 
   @Post('assignor')
-  createAssignor(@Body() createAssignorDto: CreateAssignorDto) {
-    return this.assignorService.create(createAssignorDto);
+  async createAssignor(@Body() createAssignorDto: CreateAssignorDto) {
+    return await this.assignorService.create(createAssignorDto);
+  }
+
+  @Get('assignor')
+  async findAllAssignor() {
+    return await this.assignorService.findAll();
   }
 
   @Get('assignor/:id')

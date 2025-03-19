@@ -21,13 +21,13 @@ export class AssignorController {
   }
 
   @Get()
-  findAll() {
-    return this.assignorService.findAll();
+  async findAll() {
+    return await this.assignorService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.assignorService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.assignorService.findOne(id);
   }
 
   @Patch(':id')

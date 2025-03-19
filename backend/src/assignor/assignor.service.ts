@@ -3,6 +3,7 @@ import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 import { PrismaService } from 'src/prisma_service/prisma.service';
 import { Assignor } from '@prisma/client';
+import { MessageType } from 'types/MessageType';
 
 @Injectable()
 export class AssignorService {
@@ -10,7 +11,7 @@ export class AssignorService {
 
   async create(
     createAssignorDto: CreateAssignorDto,
-  ): Promise<Assignor | { message: string }> {
+  ): Promise<Assignor | MessageType> {
     const { document, email, phone, name } = createAssignorDto;
     try {
       const isDocumentRegistered = await this.prisma.assignor.findFirst({
@@ -36,17 +37,29 @@ export class AssignorService {
     }
   }
 
-  findAll() {
-    return `This action returns all assignor`;
+  async findAll(): Promise<Assignor[]> {
+    const allAssignors = await this.prisma.assignor.findMany({
+      where: { isDeleted: false },
+    });
+
+    return allAssignors;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Assignor | MessageType> {
+    if (!id) {
+      return { message: 'É necessário informar um ID' };
+    }
+
     try {
-      const assignor = await this.prisma.assignor.findUnique({
+      const foundAssignor = await this.prisma.assignor.findUnique({
         where: { id },
       });
 
-      return assignor;
+      if (!foundAssignor) {
+        return { message: 'Cedente não encontrado' };
+      }
+
+      return foundAssignor;
     } catch (error) {
       console.error(error);
       throw new Error('Falha ao encontrar o cedente');
@@ -57,7 +70,26 @@ export class AssignorService {
     return `This action updates a #${id} assignor`;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} assignor`;
+  async remove(id: string): Promise<MessageType> {
+    if (!id) {
+      return { message: 'É necessário informar um ID' };
+    }
+
+    try {
+      const foundAssignor = await this.findOne(id);
+      if (!foundAssignor) {
+        return { message: 'Cedente não encontrado' };
+      }
+
+      await this.prisma.assignor.update({
+        where: { id },
+        data: { ...foundAssignor, isDeleted: true },
+      });
+
+      return { message: 'Cedente deletado com sucesso!' };
+    } catch (error) {
+      console.error(error);
+      throw new Error('Falha ao deletar cedente');
+    }
   }
 }
