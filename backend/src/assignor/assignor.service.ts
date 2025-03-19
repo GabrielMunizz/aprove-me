@@ -112,8 +112,6 @@ export class AssignorService {
       where: { isDeleted: true },
     });
 
-    console.log(deletedAssignors);
-
     return deletedAssignors;
   }
 
