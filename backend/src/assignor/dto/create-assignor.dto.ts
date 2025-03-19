@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsString, Length, IsEmail } from 'class-validator';
 
 export class CreateAssignorDto {
   @IsNotEmpty({ message: 'É necessário fornecer o número do CPF/CNPJ' })
@@ -8,6 +8,13 @@ export class CreateAssignorDto {
 
   @IsNotEmpty({ message: 'É necessário fornecer o e-mail' })
   @IsString({ message: 'O e-mail deve ser do formato string' })
+  @IsEmail(
+    {},
+    {
+      message:
+        'Por favor, insira um formato de e-mail válido Ex.: email@email.com.',
+    },
+  )
   @Length(140)
   email!: string;
 

@@ -17,7 +17,7 @@ export class AssignorController {
 
   @Post()
   create(@Body() createAssignorDto: CreateAssignorDto) {
-    return this.assignorService.create(createAssignorDto);
+    return this.assignorService.createAssignor(createAssignorDto);
   }
 
   @Get()

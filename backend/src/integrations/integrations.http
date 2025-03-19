@@ -1,10 +1,17 @@
 // create payable
 
-POST http://localhost:3000/integrations/payable
+POST http://localhost:3000/integrations/assignor
 Content-Type: application/json
 
 {
-  "value": 135.50,
-  "emissionDate": "2020-04-09T00:00:00.000Z",
-  "assignorId": "123e4567-e89b-12d3-a456-426614174000"
+  "document": "13276542706",
+  "email": "teste@teste.com",
+  "phone": "984863437",
+  "name": "Gabriel Muniz" 
 }
+
+# {
+#   "value": 135.50,
+#   "emissionDate": "2020-04-09T00:00:00.000Z",
+#   "assignorId": "123e4567-e89b-12d3-a456-426614174000"
+# }
