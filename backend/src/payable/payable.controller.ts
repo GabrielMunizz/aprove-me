@@ -3,13 +3,13 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  // Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { PayableService } from './payable.service';
 import { CreatePayableDto } from './dto/create-payable.dto';
-import { UpdatePayableDto } from './dto/update-payable.dto';
+// import { UpdatePayableDto } from './dto/update-payable.dto';
 
 @Controller('payable')
 export class PayableController {
@@ -27,16 +27,16 @@ export class PayableController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.payableService.findOne(+id);
+    return this.payableService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePayableDto: UpdatePayableDto) {
-    return this.payableService.update(+id, updatePayableDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updatePayableDto: UpdatePayableDto) {
+  //   return this.payableService.update(+id, updatePayableDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.payableService.remove(+id);
+    return this.payableService.remove(id);
   }
 }

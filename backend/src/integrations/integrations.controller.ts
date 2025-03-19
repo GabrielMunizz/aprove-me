@@ -24,13 +24,18 @@ export class IntegrationsController {
   ) {}
 
   @Post('payable')
-  createPayable(@Body() createPayableDto: CreatePayableDto) {
-    return this.payableService.create(createPayableDto);
+  async createPayable(@Body() createPayableDto: CreatePayableDto) {
+    const { assignorId } = createPayableDto;
+    const findAssignor = await this.assignorService.findOne(assignorId);
+    if (!assignorId) {
+      return { message: `Cedente com id ${assignorId} inexistente` };
+    }
+    return await this.payableService.create(createPayableDto);
   }
 
   @Get('payable/:id')
-  findOnePayable(@Param('id') id: string) {
-    return this.payableService.findOne(+id);
+  async findOnePayable(@Param('id') id: string) {
+    return await this.payableService.findOne(id);
   }
 
   @Post('assignor')

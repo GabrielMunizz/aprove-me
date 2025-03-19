@@ -19,15 +19,15 @@ model AccountPayable {
   emissionDate DateTime
   assignorId   String   @map("assignor_id")
   assignor     Assignor @relation(fields: [assignorId], references: [id])
-  deleted      Boolean
+  isDeleted    Boolean  @default(false)
 }
 
 model Assignor {
-  id          String              @id @default(uuid())
-  document    String
-  email       String
-  phone       String
-  name        String
-  deleted     Boolean
-  payables AccountPayable[]
+  id        String           @id @default(uuid())
+  document  String
+  email     String
+  phone     String
+  name      String
+  isDeleted Boolean          @default(false)
+  payables  AccountPayable[]
 }

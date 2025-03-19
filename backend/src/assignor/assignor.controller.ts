@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AssignorService } from './assignor.service';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
@@ -23,8 +31,11 @@ export class AssignorController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAssignorDto: UpdateAssignorDto) {
-    return this.assignorService.update(+id, updateAssignorDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateAssignorDto: UpdateAssignorDto,
+  ) {
+    return this.assignorService.update(id, updateAssignorDto);
   }
 
   @Delete(':id')

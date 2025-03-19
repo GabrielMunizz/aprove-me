@@ -1,11 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
+import { PrismaService } from 'src/prisma_service/prisma.service';
 
 @Injectable()
 export class AssignorService {
-  create(createAssignorDto: CreateAssignorDto) {
-    return 'This action adds a new assignor';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async createAssignor(createAssignorDto: CreateAssignorDto) {
+    const { document, email, phone, name } = createAssignorDto;
+    try {
+      const createdAssignor = await this.prisma.assignor.create({
+        document,
+        email,
+        phone,
+        name,
+      });
+
+      return createdAssignor;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Falha ao criar um cedente');
+    }
   }
 
   findAll() {

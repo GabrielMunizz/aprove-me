@@ -1,8 +1,10 @@
-// find a payable
+// create payable
 
-GET http://localhost:3000/integrations/payable/1
+POST http://localhost:3000/integrations/payable
+Content-Type: application/json
 
-// find a assignor
-
-GET http://localhost:3000/integrations/assignor/1
-
+{
+  "value": 135.50,
+  "emissionDate": "2020-04-09T00:00:00.000Z",
+  "assignorId": "123e4567-e89b-12d3-a456-426614174000"
+}
