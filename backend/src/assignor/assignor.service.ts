@@ -8,7 +8,7 @@ import { Assignor } from '@prisma/client';
 export class AssignorService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createAssignor(
+  async create(
     createAssignorDto: CreateAssignorDto,
   ): Promise<Assignor | { message: string }> {
     const { document, email, phone, name } = createAssignorDto;
@@ -40,15 +40,24 @@ export class AssignorService {
     return `This action returns all assignor`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} assignor`;
+  async findOne(id: string) {
+    try {
+      const assignor = await this.prisma.assignor.findUnique({
+        where: { id },
+      });
+
+      return assignor;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Falha ao encontrar o cedente');
+    }
   }
 
-  update(id: number, updateAssignorDto: UpdateAssignorDto) {
+  update(id: string, updateAssignorDto: UpdateAssignorDto) {
     return `This action updates a #${id} assignor`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} assignor`;
   }
 }

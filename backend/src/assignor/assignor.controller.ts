@@ -16,8 +16,8 @@ export class AssignorController {
   constructor(private readonly assignorService: AssignorService) {}
 
   @Post()
-  create(@Body() createAssignorDto: CreateAssignorDto) {
-    return this.assignorService.createAssignor(createAssignorDto);
+  async create(@Body() createAssignorDto: CreateAssignorDto) {
+    return await this.assignorService.create(createAssignorDto);
   }
 
   @Get()
@@ -27,7 +27,7 @@ export class AssignorController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.assignorService.findOne(+id);
+    return this.assignorService.findOne(id);
   }
 
   @Patch(':id')
@@ -40,6 +40,6 @@ export class AssignorController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.assignorService.remove(+id);
+    return this.assignorService.remove(id);
   }
 }
