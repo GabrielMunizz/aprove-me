@@ -7,8 +7,9 @@ Content-Type: application/json
 {
   "document": "13276542706",
   "email": "teste@teste.com",
-  "phone": "984863437",
-  "name": "Gabriel Muniz Ferreira" 
+  "phone": "(32) 984863437",
+  "name": "Gabriel Muniz Ferreira", 
+  "isDeleted": false
 }
 
 GET  http://localhost:3000/integrations/payable

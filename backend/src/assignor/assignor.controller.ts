@@ -39,7 +39,7 @@ export class AssignorController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.assignorService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.assignorService.remove(id);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 import { PrismaService } from 'src/prisma_service/prisma.service';
+import { HttpException } from '@nestjs/common';
 import { Assignor } from '@prisma/client';
 import { MessageType } from 'types/MessageType';
 
@@ -19,7 +20,7 @@ export class AssignorService {
       });
       if (isDocumentRegistered) {
         console.error('Esse CPF/CNPJ já existe');
-        return { message: "Esse CPF/CNPJ já existe'" };
+        throw new HttpException('Esse CPF/CNPJ já existe', 409);
       }
       const createdAssignor = await this.prisma.assignor.create({
         data: {
@@ -33,7 +34,7 @@ export class AssignorService {
       return createdAssignor;
     } catch (error) {
       console.error(error);
-      throw new Error('Falha ao criar um cedente');
+      throw new HttpException('Falha ao criar um cedente', 500);
     }
   }
 
@@ -47,51 +48,50 @@ export class AssignorService {
 
   async findOne(id: string): Promise<Assignor | MessageType> {
     if (!id) {
-      return { message: 'É necessário informar um ID' };
+      throw new HttpException('É necessário informar um ID', 400);
     }
 
     try {
       const foundAssignor = await this.prisma.assignor.findUnique({
-        where: { id },
+        where: { id, isDeleted: false },
       });
+      console.log('ISFOUND? --->', foundAssignor);
 
       if (!foundAssignor) {
-        return { message: 'Cedente não encontrado' };
+        throw new HttpException('Cedente não encontrado', 404);
       }
 
       return foundAssignor;
     } catch (error) {
       console.error(error);
-      throw new Error('Falha ao encontrar o cedente');
+      throw new HttpException('Falha ao encontrar o cedente', 500);
     }
   }
 
   async update(id: string, updateAssignorDto: UpdateAssignorDto) {
     if (!id) {
-      return { message: 'É necessário informar um ID' };
+      throw new HttpException('É necessário informar um ID', 400);
     }
 
     try {
       const foundAssignor = await this.findOne(id);
-      if (!foundAssignor) {
-        return { message: 'Cedente não encontrado' };
+      if (foundAssignor) {
+        const updatedAssignor = await this.prisma.assignor.update({
+          where: { id },
+          data: { ...updateAssignorDto, isDeleted: false },
+        });
+
+        return updatedAssignor;
       }
-
-      const updatedAssignor = await this.prisma.assignor.update({
-        where: { id },
-        data: updateAssignorDto,
-      });
-
-      return updatedAssignor;
     } catch (error) {
       console.error(error);
-      throw new Error('Falha ao alterar informações do cedente');
+      throw new HttpException('Falha ao alterar informações do cedente', 500);
     }
   }
 
   async remove(id: string): Promise<MessageType> {
     if (!id) {
-      return { message: 'É necessário informar um ID' };
+      throw new HttpException('É necessário informar um ID', 400);
     }
 
     try {
@@ -108,7 +108,7 @@ export class AssignorService {
       return { message: 'Cedente deletado com sucesso!' };
     } catch (error) {
       console.error(error);
-      throw new Error('Falha ao deletar cedente');
+      throw new HttpException('Falha ao deletar cedente', 500);
     }
   }
 }

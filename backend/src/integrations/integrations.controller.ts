@@ -62,6 +62,11 @@ export class IntegrationsController {
     return await this.assignorService.update(id, updateAssignorDto);
   }
 
+  @Delete('assignor/:id')
+  async deleteAssignor(@Param('id') id: string) {
+    return await this.assignorService.remove(id);
+  }
+
   @Post()
   create(@Body() createIntegrationDto: CreateIntegrationDto) {
     return this.integrationsService.create(createIntegrationDto);
