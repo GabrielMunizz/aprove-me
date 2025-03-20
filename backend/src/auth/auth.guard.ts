@@ -16,11 +16,11 @@ export class AuthGuard implements CanActivate {
     const token = request.headers['authorization']?.split(' ')[1];
 
     if (!token) {
-      throw new UnauthorizedException('É necessário um token válido');
+      throw new UnauthorizedException('Não autorizado');
     }
 
     try {
-      this.jwtService.verify(token);
+      this.jwtService.verify(token, { secret: process.env.JWT_SECRET });
       return true;
     } catch (error) {
       console.error(error);
