@@ -36,6 +36,16 @@ describe('PayableService', () => {
     };
 
     it('Should create a payable', async () => {
+      const assignor = {
+        id: '1',
+        document: '99999999999',
+        email: 'test@test.com',
+        phone: '9999999999',
+        name: 'Testando da Silva',
+        isDeleted: false,
+      };
+
+      jest.spyOn(prisma.assignor, 'findUnique').mockResolvedValue(assignor);
       jest.spyOn(prisma.accountPayable, 'create').mockResolvedValue(payable);
 
       const result = await service.create(dto);

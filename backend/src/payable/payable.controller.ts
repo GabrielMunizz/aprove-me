@@ -3,40 +3,58 @@ import {
   Get,
   Post,
   Body,
-  // Patch,
+  Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { PayableService } from './payable.service';
 import { CreatePayableDto } from './dto/create-payable.dto';
-// import { UpdatePayableDto } from './dto/update-payable.dto';
+import { UpdatePayableDto } from './dto/update-payable.dto';
 
-@Controller('payable')
+@Controller('integrations/')
 export class PayableController {
   constructor(private readonly payableService: PayableService) {}
 
-  @Post()
-  create(@Body() createPayableDto: CreatePayableDto) {
-    return this.payableService.create(createPayableDto);
+  @Post('payable')
+  async createPayable(@Body() createPayableDto: CreatePayableDto) {
+    return await this.payableService.create(createPayableDto);
   }
 
-  @Get()
-  findAll() {
-    return this.payableService.findAll();
+  @Get('payable')
+  async findAllPayables() {
+    return await this.payableService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.payableService.findOne(id);
+  @Get('payable/:id')
+  async findOnePayable(@Param('id') id: string) {
+    return await this.payableService.findOne(id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePayableDto: UpdatePayableDto) {
-  //   return this.payableService.update(+id, updatePayableDto);
-  // }
+  @Patch('payable/:id')
+  async updatePayable(
+    @Param('id') id: string,
+    @Body() updatePayableDto: UpdatePayableDto,
+  ) {
+    return await this.payableService.update(id, updatePayableDto);
+  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.payableService.remove(id);
+  @Delete('payable/:id')
+  async deletePayable(@Param('id') id: string) {
+    return await this.payableService.remove(id);
+  }
+
+  @Get('payable/recover/all')
+  async listDeletedPayables() {
+    return await this.payableService.listDeletedPayables();
+  }
+
+  @Get('payable/recover/:id')
+  async findDeletedPayable(@Param('id') id: string) {
+    return await this.payableService.findDeletedPayable(id);
+  }
+
+  @Patch('payable/recover/:id')
+  async recoverDeletedPayable(@Param('id') id: string) {
+    return await this.payableService.recoverPayable(id);
   }
 }

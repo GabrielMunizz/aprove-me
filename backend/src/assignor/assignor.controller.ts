@@ -11,35 +11,50 @@ import { AssignorService } from './assignor.service';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 
-@Controller('assignor')
+@Controller('integrations/')
 export class AssignorController {
   constructor(private readonly assignorService: AssignorService) {}
 
-  @Post()
-  async create(@Body() createAssignorDto: CreateAssignorDto) {
+  @Post('assignor')
+  async createAssignor(@Body() createAssignorDto: CreateAssignorDto) {
     return await this.assignorService.create(createAssignorDto);
   }
 
-  @Get()
-  async findAll() {
+  @Get('assignor')
+  async findAllAssignors() {
     return await this.assignorService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get('assignor/:id')
+  async findOneAssignor(@Param('id') id: string) {
     return await this.assignorService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
+  @Patch('assignor/:id')
+  async updateAssignor(
     @Param('id') id: string,
     @Body() updateAssignorDto: UpdateAssignorDto,
   ) {
-    return this.assignorService.update(id, updateAssignorDto);
+    return await this.assignorService.update(id, updateAssignorDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @Delete('assignor/:id')
+  async deleteAssignor(@Param('id') id: string) {
     return await this.assignorService.remove(id);
+  }
+
+  @Get('assignor/recover/all')
+  async listDeletedAssignors() {
+    return await this.assignorService.listDeletedAssignors();
+  }
+
+  @Get('assignor/recover/:id')
+  async findDeletedAssignor(@Param('id') id: string) {
+    return await this.assignorService.findDeletedAssignor(id);
+  }
+
+  @Patch('assignor/recover/:id')
+  async recoverAssignor(@Param('id') id: string) {
+    return await this.assignorService.recoverAssignor(id);
   }
 }

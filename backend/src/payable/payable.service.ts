@@ -9,8 +9,17 @@ import { MessageType } from 'types/MessageType';
 export class PayableService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createPayableDto: CreatePayableDto): Promise<AccountPayable> {
+  async create(
+    createPayableDto: CreatePayableDto,
+  ): Promise<AccountPayable | MessageType> {
     const { value, emissionDate, assignorId } = createPayableDto;
+
+    const foundAssignor = await this.prisma.assignor.findUnique({
+      where: { id: assignorId },
+    });
+    if (!foundAssignor) {
+      return { message: `Cedente com id ${assignorId} inexistente` };
+    }
 
     try {
       const createdPayable = await this.prisma.accountPayable.create({
