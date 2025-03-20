@@ -111,6 +111,10 @@ export class PayableService {
         where: { id, isDeleted: true },
       });
 
+      if (!foundPayable) {
+        throw new HttpException('Recebível não encontrado', 404);
+      }
+
       return foundPayable;
     } catch (error) {
       console.error(error);
