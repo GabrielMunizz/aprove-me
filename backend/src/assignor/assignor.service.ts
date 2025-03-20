@@ -10,9 +10,7 @@ import { MessageType } from 'types/MessageType';
 export class AssignorService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(
-    createAssignorDto: CreateAssignorDto,
-  ): Promise<Assignor | MessageType> {
+  async create(createAssignorDto: CreateAssignorDto): Promise<Assignor> {
     const { document, email, phone, name } = createAssignorDto;
     try {
       const isDocumentRegistered = await this.prisma.assignor.findFirst({
@@ -46,7 +44,7 @@ export class AssignorService {
     return allAssignors;
   }
 
-  async findOne(id: string): Promise<Assignor | MessageType> {
+  async findOne(id: string): Promise<Assignor> {
     if (!id) {
       throw new HttpException('É necessário informar um ID', 400);
     }
@@ -67,21 +65,22 @@ export class AssignorService {
     }
   }
 
-  async update(id: string, updateAssignorDto: UpdateAssignorDto) {
+  async update(
+    id: string,
+    updateAssignorDto: UpdateAssignorDto,
+  ): Promise<Assignor> {
     if (!id) {
       throw new HttpException('É necessário informar um ID', 400);
     }
 
     const foundAssignor = await this.findOne(id);
     try {
-      if (foundAssignor) {
-        const updatedAssignor = await this.prisma.assignor.update({
-          where: { id },
-          data: { ...updateAssignorDto, isDeleted: false },
-        });
+      const updatedAssignor = await this.prisma.assignor.update({
+        where: { id: foundAssignor.id },
+        data: { ...updateAssignorDto, isDeleted: false },
+      });
 
-        return updatedAssignor;
-      }
+      return updatedAssignor;
     } catch (error) {
       console.error(error);
       throw new HttpException('Falha ao alterar informações do cedente', 500);
