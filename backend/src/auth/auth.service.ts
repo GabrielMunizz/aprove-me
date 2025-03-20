@@ -4,12 +4,12 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
-  async login(login: string, password: string) {
+  login(login: string, password: string) {
     if (login !== 'aprovame' || password !== 'aprovame') {
       throw new UnauthorizedException('login ou senha inválidos');
     }
     const payload = { username: login };
-    const accessToken = await this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       expiresIn: '1m',
     });
 

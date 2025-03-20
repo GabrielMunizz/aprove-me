@@ -31,3 +31,9 @@ model Assignor {
   isDeleted Boolean          @default(false)
   payables  AccountPayable[]
 }
+
+model Users {
+  id String @id @default(uuid())
+  login String
+  password String
+}
