@@ -1,0 +1,40 @@
+services:
+  backend:
+    container_name: app_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: app_backend
+    ports:
+      - '3001:3001'
+    working_dir: /app-backend
+    healthcheck:
+      test: ['CMD', 'lsof', '-t', '-i:3001']
+      timeout: 10s
+      retries: 5
+    environment:
+      - APP_PORT=3001
+      - NODE_ENV=production
+      - JWT_SECRET=secret
+      - DATABASE_URL=file:/app-backend/prisma/dev.db
+    volumes:
+      - ./backend:/app-backend
+      - ./backend/prisma:/app-backend/prisma
+    networks:
+      - app-network
+
+  frontend:
+    container_name: app_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    working_dir: /app-frontend
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
