@@ -33,7 +33,7 @@ model Assignor {
 }
 
 model Users {
-  id String @id @default(uuid())
-  login String
+  id       String @id @default(uuid())
+  login    String
   password String
 }

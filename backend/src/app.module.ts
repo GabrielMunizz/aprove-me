@@ -5,11 +5,25 @@ import { PrismaService } from './prisma_service/prisma.service';
 
 import { PayableModule } from './payable/payable.module';
 import { AssignorModule } from './assignor/assignor.module';
-import { UserModule } from './user/user.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
+import { AuthService } from './auth/auth.service';
+import { UsersService } from './user/user.service';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
-  imports: [PayableModule, AssignorModule, UserModule],
+  imports: [
+    PayableModule,
+    AssignorModule,
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60s' },
+    }),
+    AuthModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, AuthService, AuthGuard, UsersService],
 })
 export class AppModule {}

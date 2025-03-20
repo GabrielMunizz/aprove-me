@@ -1,21 +1,20 @@
-import { Injectable } from '@nestjs/common';
-
-export type User = {
-  login: string;
-  password: string;
-};
+import { HttpException, Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma_service/prisma.service';
+import { Users } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: '1',
-      username: 'aprovame',
-      password: 'aprovame',
-    },
-  ];
+  constructor(private readonly prisma: PrismaService) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return await this.users.find((user) => user.username === username);
+  async findOne(login: string): Promise<Users> {
+    const foundUser = await this.prisma.users.findFirst({
+      where: { login },
+    });
+
+    if (!foundUser) {
+      throw new HttpException('Usuário não encontrado', 404);
+    }
+
+    return foundUser;
   }
 }

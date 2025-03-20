@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 interface Login {
@@ -6,13 +6,18 @@ interface Login {
   password: string;
 }
 
-@Controller('integrations')
+@Controller('integrations/')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('auth')
+  checkHealth() {
+    return { message: 'rota funcionando' };
+  }
 
   @Post('auth')
   login(@Body() body: Login) {
     const { login, password } = body;
-    return this.authService.login(login, password);
+    return this.authService.signIn(login, password);
   }
 }
