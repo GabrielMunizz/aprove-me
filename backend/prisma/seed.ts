@@ -19,17 +19,16 @@ async function main() {
           role: 'admin',
         },
       });
+    } else {
+      const user = await prisma.users.create({
+        data: {
+          login: 'aprovame',
+          password: hashedPassword,
+          role: 'admin',
+        },
+      });
+      console.log('Usuário criado com sucesso', user);
     }
-
-    const user = await prisma.users.create({
-      data: {
-        login: 'aprovame',
-        password: hashedPassword,
-        role: 'admin',
-      },
-    });
-
-    console.log('Usuário criado com sucesso', user);
   } catch (error) {
     console.error(error);
     process.exit(1);

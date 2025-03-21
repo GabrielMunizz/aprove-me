@@ -12,9 +12,9 @@ export class UserController {
     return await this.userService.create(createUserDto);
   }
 
-  @Roles('private')
+  @Roles('admin')
   @Get()
-  findAll() {
-    return 'This action returns all users';
+  async findAll() {
+    return await this.userService.findAll();
   }
 }

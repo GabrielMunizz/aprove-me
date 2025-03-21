@@ -37,12 +37,12 @@ export class AuthGuard implements CanActivate {
       const payload = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
       });
-      const userRoles = payload.roles || [];
+      const userRole: string = payload.role || '';
+
+      console.log('ROLE -->', userRole);
 
       const hasRole = () => {
-        const permission: string = userRoles.some((role: string) =>
-          requiredRoles.includes(role),
-        );
+        const permission = requiredRoles.includes(userRole);
 
         return permission;
       };
