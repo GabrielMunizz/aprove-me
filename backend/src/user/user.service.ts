@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma_service/prisma.service';
 import { Users } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +16,7 @@ export class UsersService {
       throw new HttpException('Esse login já existe', 409);
     }
     try {
-      const hashedPassword = bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
       await this.prisma.users.create({
         data: {
           login,
