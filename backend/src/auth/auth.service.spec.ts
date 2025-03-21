@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/user/user.service';
 import { PrismaService } from 'src/prisma_service/prisma.service';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -34,6 +34,7 @@ describe('AuthService', () => {
         id: '1',
         login: 'teste',
         password: hashedPassword,
+        role: 'admin',
       };
       const token = 'token';
 
