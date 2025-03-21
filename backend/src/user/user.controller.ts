@@ -1,6 +1,7 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { Roles } from 'src/auth/roles.decorator';
 
 @Controller('user/')
 export class UserController {
@@ -11,6 +12,7 @@ export class UserController {
     return await this.userService.create(createUserDto);
   }
 
+  @Roles('private')
   @Get()
   findAll() {
     return 'This action returns all users';

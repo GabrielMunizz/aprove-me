@@ -21,6 +21,7 @@ export class UsersService {
         data: {
           login,
           password: hashedPassword,
+          role: 'private',
         },
       });
 

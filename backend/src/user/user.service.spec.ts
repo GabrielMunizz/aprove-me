@@ -25,6 +25,7 @@ describe('UserService', () => {
         id: '1',
         login: 'teste',
         password: 'password',
+        role: 'private',
       };
       jest.spyOn(prisma.users, 'findFirst').mockResolvedValue(user);
 
