@@ -29,10 +29,16 @@ import formatAssignors, { Assignors } from '@/utils/formatAssignors';
 
 const formSchema = z.object({
   value: z
-    .number({
+    .string({
       message: 'O valor é obrigatório.',
     })
-    .nonnegative({ message: 'O valor não pode ser negativo' }),
+    .refine(
+      (val) => {
+        const numericValue = parseFloat(val);
+        return !isNaN(numericValue) && numericValue >= 0;
+      },
+      { message: 'O valor não pode ser negativo' }
+    ),
   emissionDate: z.date({
     required_error: 'A data é obrigatória.',
   }),
@@ -70,7 +76,7 @@ const RegisterPayable = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      value: 0,
+      value: '0',
       emissionDate: new Date(),
       assignor: '',
     },

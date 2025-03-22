@@ -3,7 +3,7 @@ import { UseFormReturn } from 'react-hook-form';
 export type FormFieldProps = {
   form: UseFormReturn<
     {
-      value: number;
+      value: string;
       emissionDate: Date;
       assignor: string;
     },
