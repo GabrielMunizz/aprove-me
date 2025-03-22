@@ -16,7 +16,6 @@ import {
 
 import { DatePicker } from '../DatePicker/DatePicker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import FormFieldSelect from '../FormFieldSelect/FormFieldSelect';
 import FormInput from '../FormInput/FormInput';
 import {
   handleCreatePayable,
@@ -26,6 +25,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import formatAssignors, { Assignors } from '@/utils/formatAssignors';
+import Combobox from '../ComboBox/Combobox';
 
 const formSchema = z.object({
   value: z
@@ -129,13 +129,7 @@ const RegisterPayable = () => {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <FormFieldSelect
-                  name="assignor"
-                  placeHolder="Escolha o tipo"
-                  form={form}
-                  label="Cedente"
-                  options={assignorOptions}
-                />
+                <Combobox options={assignorOptions} />
               </div>
             </div>
             <CardFooter className="flex justify-between mt-8">

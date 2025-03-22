@@ -29,9 +29,9 @@ export const handleFetchAssignors = async () => {
 export const handleCreatePayable = async (formData: FormData) => {
   const { value, emissionDate, assignor } = formData;
   const { data } = await api.post('/integrations/payable', {
-    value,
+    value: Number(value),
     emissionDate,
-    assignor: Number(assignor),
+    assignorId: assignor,
   });
 
   console.log(data);
