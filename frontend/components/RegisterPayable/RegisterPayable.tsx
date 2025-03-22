@@ -1,4 +1,9 @@
+'use client';
+
 import * as React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -8,50 +13,80 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+
 import { DatePicker } from '../DatePicker/DatePicker';
+import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import FormFieldSelect from '../FormFieldSelect/FormFieldSelect';
+import FormInput from '../FormInput/FormInput';
+
+const formSchema = z.object({
+  value: z.string().trim().min(1, {
+    message: 'O valor é obrigatório.',
+  }),
+  emissionDate: z.date({
+    required_error: 'A data é obrigatória.',
+  }),
+  assignor: z.string().trim().min(1, {
+    message: 'É necessário selecionar um cedente.',
+  }),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 const RegisterPayable = () => {
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      value: '',
+      emissionDate: new Date(),
+      assignor: '',
+    },
+  });
   return (
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle className="text-[#005ee0]">Cadastro de recebíveis</CardTitle>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-8">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="payable">Valor</Label>
-              <Input id="payable" placeholder="Valor do recebível" />
+        <Form {...form}>
+          <form>
+            <div className="grid w-full items-center gap-8">
+              <div className="flex flex-col space-y-1.5">
+                <FormInput
+                  form={form}
+                  name="value"
+                  label="Valor"
+                  labelClassname="text-normal font-semibold text-sm"
+                  placeholder="Digite o valor do recebível"
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="emissionDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Data</FormLabel>
+                      <DatePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <FormFieldSelect
+                  name="emissionDate"
+                  placeHolder="Escolha o tipo"
+                  form={form}
+                  label="Cedente"
+                  options={[]}
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="emissionDate">Data de emissão</Label>
-              <DatePicker />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="assignor">Cedente</Label>
-              <Select>
-                <SelectTrigger id="assignor">
-                  <SelectValue placeholder="Selecionar" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="next">Next.js</SelectItem>
-                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                  <SelectItem value="astro">Astro</SelectItem>
-                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </form>
+          </form>
+        </Form>
       </CardContent>
       <CardFooter className="flex justify-between mt-8">
         <Button variant="outline">Cancelar</Button>
