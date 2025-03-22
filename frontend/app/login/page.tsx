@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +20,7 @@ import {
 import { Form } from '@/components/ui/form';
 import { TailSpin } from 'react-loader-spinner';
 import FormInput from '@/components/FormInput/FormInput';
+import { handleLogin } from '@/utils/fetch';
 
 const formSchema = z.object({
   login: z.string().min(3, { message: 'Mínimo 3 caracteres' }),
@@ -33,6 +34,7 @@ type FormData = z.infer<typeof formSchema>;
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const router = useRouter();
 
   const form = useForm<FormData>({
@@ -43,20 +45,13 @@ const Login = () => {
     },
   });
 
-  const handleLogin = async (login: string, password: string) => {
-    const response = await axios.post(
-      'http://localhost:3001/integrations/auth',
-      { login, password }
-    );
-
-    return response;
-  };
-
   const handleSubmit = async (formdata: FormData) => {
     setIsLoading(true);
     setErrorMessage(null);
     try {
       const { data } = await handleLogin(formdata.login, formdata.password);
+
+      console.log('DATA-->', data);
 
       localStorage.setItem('token', JSON.stringify(data.accessToken));
       router.push('/');

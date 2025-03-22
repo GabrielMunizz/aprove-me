@@ -18,6 +18,9 @@ import { DatePicker } from '../DatePicker/DatePicker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import FormFieldSelect from '../FormFieldSelect/FormFieldSelect';
 import FormInput from '../FormInput/FormInput';
+import { handleFetchAssignors } from '@/utils/fetch';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   value: z.string().trim().min(1, {
@@ -34,6 +37,13 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const RegisterPayable = () => {
+  const router = useRouter();
+  const { data } = useQuery({
+    queryKey: ['transactions'],
+    queryFn: () => handleFetchAssignors(),
+  });
+
+  console.log('DATA -->', data);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,6 +52,15 @@ const RegisterPayable = () => {
       assignor: '',
     },
   });
+
+  const handleSubmit = (formData: FormData) => {
+    console.log(formData);
+  };
+
+  const handleCancel = () => {
+    form.reset();
+    router.push('/login');
+  };
   return (
     <Card className="w-[350px]">
       <CardHeader>
@@ -49,7 +68,7 @@ const RegisterPayable = () => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
             <div className="grid w-full items-center gap-8">
               <div className="flex flex-col space-y-1.5">
                 <FormInput
@@ -85,15 +104,20 @@ const RegisterPayable = () => {
                 />
               </div>
             </div>
+            <CardFooter className="flex justify-between mt-8">
+              <Button variant="outline" onClick={handleCancel}>
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                className="bg-[#005ee0] hover:bg-[#1457b4] font-bold"
+              >
+                Cadastrar
+              </Button>
+            </CardFooter>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-between mt-8">
-        <Button variant="outline">Cancelar</Button>
-        <Button className="bg-[#005ee0] hover:bg-[#1457b4] font-bold">
-          Cadastrar
-        </Button>
-      </CardFooter>
     </Card>
   );
 };
