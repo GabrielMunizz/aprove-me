@@ -25,7 +25,7 @@ export class AssignorController {
     return await this.assignorService.create(createAssignorDto);
   }
 
-  @Roles('private')
+  @Roles('admin')
   @Get('assignor')
   async findAllAssignors() {
     return await this.assignorService.findAll();

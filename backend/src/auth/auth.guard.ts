@@ -39,8 +39,6 @@ export class AuthGuard implements CanActivate {
       });
       const userRole: string = payload.role || '';
 
-      console.log('ROLE -->', userRole);
-
       const hasRole = () => {
         const permission = requiredRoles.includes(userRole);
 
