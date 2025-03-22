@@ -18,14 +18,21 @@ import { DatePicker } from '../DatePicker/DatePicker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import FormFieldSelect from '../FormFieldSelect/FormFieldSelect';
 import FormInput from '../FormInput/FormInput';
-import { handleFetchAssignors } from '@/utils/fetch';
+import {
+  handleCreatePayable,
+  handleFetchAssignors,
+  setAccessToken,
+} from '@/utils/fetch';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import formatAssignors, { Assignors } from '@/utils/formatAssignors';
 
 const formSchema = z.object({
-  value: z.string().trim().min(1, {
-    message: 'O valor é obrigatório.',
-  }),
+  value: z
+    .number({
+      message: 'O valor é obrigatório.',
+    })
+    .nonnegative({ message: 'O valor não pode ser negativo' }),
   emissionDate: z.date({
     required_error: 'A data é obrigatória.',
   }),
@@ -34,27 +41,47 @@ const formSchema = z.object({
   }),
 });
 
-type FormSchema = z.infer<typeof formSchema>;
+export type FormData = z.infer<typeof formSchema>;
 
 const RegisterPayable = () => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setAccessToken(JSON.parse(token));
+    }
+  }
   const router = useRouter();
   const { data } = useQuery({
     queryKey: ['transactions'],
-    queryFn: () => handleFetchAssignors(),
+    queryFn: async () => {
+      const { data } = await handleFetchAssignors();
+      if (data) {
+        return data as Assignors[];
+      }
+
+      return [] as Assignors[];
+    },
   });
 
-  console.log('DATA -->', data);
-  const form = useForm<FormSchema>({
+  const assignors = data ? data : [];
+
+  const assignorOptions = formatAssignors(assignors);
+
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      value: '',
+      value: 0,
       emissionDate: new Date(),
       assignor: '',
     },
   });
 
-  const handleSubmit = (formData: FormData) => {
-    console.log(formData);
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      await handleCreatePayable(formData);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleCancel = () => {
@@ -75,6 +102,7 @@ const RegisterPayable = () => {
                   form={form}
                   name="value"
                   label="Valor"
+                  type="number"
                   labelClassname="text-normal font-semibold text-sm"
                   placeholder="Digite o valor do recebível"
                 />
@@ -96,11 +124,11 @@ const RegisterPayable = () => {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <FormFieldSelect
-                  name="emissionDate"
+                  name="assignor"
                   placeHolder="Escolha o tipo"
                   form={form}
                   label="Cedente"
-                  options={[]}
+                  options={assignorOptions}
                 />
               </div>
             </div>

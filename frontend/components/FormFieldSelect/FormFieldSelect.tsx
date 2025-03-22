@@ -15,17 +15,17 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface FormFieldSelectType<T extends string> extends FormFieldProps {
-  options: { value: T; label: string }[];
+interface FormFieldSelectType extends FormFieldProps {
+  options: string[];
 }
 
-const FormFieldSelect = <T extends string>({
+const FormFieldSelect = ({
   form,
   placeHolder,
   name,
   label,
   options,
-}: FormFieldSelectType<T>) => {
+}: FormFieldSelectType) => {
   return (
     <FormField
       control={form.control}
@@ -48,8 +48,8 @@ const FormFieldSelect = <T extends string>({
             </FormControl>
             <SelectContent>
               {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+                <SelectItem key={option} value={option}>
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>

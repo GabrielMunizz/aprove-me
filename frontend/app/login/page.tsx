@@ -51,8 +51,6 @@ const Login = () => {
     try {
       const { data } = await handleLogin(formdata.login, formdata.password);
 
-      console.log('DATA-->', data);
-
       localStorage.setItem('token', JSON.stringify(data.accessToken));
       router.push('/');
     } catch (error) {

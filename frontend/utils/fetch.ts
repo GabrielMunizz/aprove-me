@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FormData } from '@/components/RegisterPayable/RegisterPayable';
 
 const baseURL = 'http://localhost:3001';
 
@@ -6,7 +7,7 @@ const api = axios.create({
   baseURL,
 });
 
-const setAccessToken = (token: string) => {
+export const setAccessToken = (token: string) => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
@@ -16,8 +17,6 @@ export const handleLogin = async (login: string, password: string) => {
     password,
   });
 
-  setAccessToken(data.accessToken);
-
   return { data };
 };
 
@@ -25,4 +24,10 @@ export const handleFetchAssignors = async () => {
   const { data } = await api.get('/integrations/assignor');
 
   return { data };
+};
+
+export const handleCreatePayable = async (formData: FormData) => {
+  const { data } = await api.post('/integrations/payable', formData);
+
+  console.log(data);
 };
