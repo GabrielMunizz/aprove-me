@@ -18,7 +18,7 @@ services:
       - JWT_SECRET=secret
       - DATABASE_URL=file:/app-backend/prisma/dev.db
     volumes:
-      - ./backend:/app-backend
+      - ./backend/src:/app-backend/src
       - ./backend/prisma:/app-backend/prisma
     networks:
       - app-network
@@ -33,6 +33,11 @@ services:
     working_dir: /app-frontend
     environment:
       - NODE_ENV=production
+      - BACKEND_URL=http://localhost:3001/
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./frontend:/app-frontend
+      - /app-frontend/node_modules
     networks:
       - app-network
 
