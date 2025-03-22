@@ -31,6 +31,8 @@ type ComboboxProps = {
 const Combobox = ({ options }: ComboboxProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
+
+  console.log(value);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -38,34 +40,34 @@ const Combobox = ({ options }: ComboboxProps) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[300px] justify-between"
         >
           {value
-            ? options.find((framework) => framework.value === value)?.label
+            ? options.find((option) => option.label === value)?.label
             : 'Selecionar cedente'}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[300px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
+          <CommandInput placeholder="Procurar cedente" className="h-9" />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>Cedente não encontrado</CommandEmpty>
             <CommandGroup>
-              {options.map((framework) => (
+              {options.map((option) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={option.value}
+                  value={option.label}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? '' : currentValue);
                     setOpen(false);
                   }}
                 >
-                  {framework.label}
+                  {option.label}
                   <Check
                     className={cn(
                       'ml-auto',
-                      value === framework.value ? 'opacity-100' : 'opacity-0'
+                      value === option.label ? 'opacity-100' : 'opacity-0'
                     )}
                   />
                 </CommandItem>
