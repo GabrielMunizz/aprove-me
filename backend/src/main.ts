@@ -8,6 +8,10 @@ async function bootstrap() {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+  });
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
