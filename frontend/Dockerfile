@@ -4,13 +4,14 @@ WORKDIR /app-frontend
 
 COPY package*.json ./
 
-RUN yarn install --immutable
+RUN npm install
 
 COPY . .
-COPY next.config.ts ./next.config.ts
+COPY next.config.mjs ./next.config.mjs
+COPY tailwind.config.ts ./tailwind.config.ts
 
-# RUN yarn build
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["yarn", "dev"]
+CMD ["npm", "run", "start"]
