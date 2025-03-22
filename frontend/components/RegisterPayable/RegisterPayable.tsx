@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -18,26 +17,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { DatePicker } from '../DatePicker/DatePicker';
 
 const RegisterPayable = () => {
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardTitle className="text-[#005ee0]">Cadastro de recebíveis</CardTitle>
       </CardHeader>
       <CardContent>
         <form>
-          <div className="grid w-full items-center gap-4">
+          <div className="grid w-full items-center gap-8">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Name of your project" />
+              <Label htmlFor="payable">Valor</Label>
+              <Input id="payable" placeholder="Valor do recebível" />
+            </div>
+            <div>
+              <Label htmlFor="emissionDate">Data de emissão</Label>
+              <DatePicker />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Framework</Label>
+              <Label htmlFor="assignor">Cedente</Label>
               <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
+                <SelectTrigger id="assignor">
+                  <SelectValue placeholder="Selecionar" />
                 </SelectTrigger>
                 <SelectContent position="popper">
                   <SelectItem value="next">Next.js</SelectItem>
@@ -50,9 +53,11 @@ const RegisterPayable = () => {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+      <CardFooter className="flex justify-between mt-8">
+        <Button variant="outline">Cancelar</Button>
+        <Button className="bg-[#005ee0] hover:bg-[#1457b4] font-bold">
+          Cadastrar
+        </Button>
       </CardFooter>
     </Card>
   );
