@@ -18,65 +18,89 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { FormFieldProps } from '../FormFieldSelect/type';
 
-type AssignorOptions = {
-  label: string;
-  value: string;
-};
+interface ComboBoxPropsType<T extends string> extends FormFieldProps {
+  options: { value: T; label: string }[];
+}
 
-type ComboboxProps = {
-  options: AssignorOptions[];
-};
-
-const Combobox = ({ options }: ComboboxProps) => {
+const Combobox = <T extends string>({
+  form,
+  name,
+  label,
+  options,
+}: ComboBoxPropsType<T>) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
 
-  console.log(value);
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[300px] justify-between"
-        >
-          {value
-            ? options.find((option) => option.label === value)?.label
-            : 'Selecionar cedente'}
-          <ChevronsUpDown className="opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
-        <Command>
-          <CommandInput placeholder="Procurar cedente" className="h-9" />
-          <CommandList>
-            <CommandEmpty>Cedente não encontrado</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.label}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue);
-                    setOpen(false);
-                  }}
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+          <Popover open={open} onOpenChange={setOpen}>
+            <FormControl>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-[300px] justify-between"
                 >
-                  {option.label}
-                  <Check
-                    className={cn(
-                      'ml-auto',
-                      value === option.label ? 'opacity-100' : 'opacity-0'
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                  {field.value
+                    ? options.find((option) => option.label === field.value)
+                        ?.label
+                    : 'Selecionar cedente'}
+                  <ChevronsUpDown className="opacity-50" />
+                </Button>
+              </PopoverTrigger>
+            </FormControl>
+            <PopoverContent className="w-[300px] p-0">
+              <Command>
+                <CommandInput placeholder="Procurar cedente" className="h-9" />
+                <CommandList>
+                  <CommandEmpty>Cedente não encontrado</CommandEmpty>
+                  <CommandGroup>
+                    {options.map((option) => (
+                      <CommandItem
+                        key={option.value}
+                        value={option.label}
+                        onSelect={(currentValue) => {
+                          field.onChange(
+                            currentValue === field.value ? '' : currentValue
+                          );
+                          setOpen(false);
+                        }}
+                      >
+                        {option.label}
+                        <Check
+                          className={cn(
+                            'ml-auto',
+                            field.value === option.label
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };
 

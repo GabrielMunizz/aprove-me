@@ -28,11 +28,11 @@ export const handleFetchAssignors = async () => {
 
 export const handleCreatePayable = async (formData: FormData) => {
   const { value, emissionDate, assignor } = formData;
-  const { data } = await api.post('/integrations/payable', {
+  const { data, status } = await api.post('/integrations/payable', {
     value: Number(value),
     emissionDate,
     assignorId: assignor,
   });
 
-  console.log(data);
+  return { data, status };
 };

@@ -4,6 +4,14 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  handleCreatePayable,
+  handleFetchAssignors,
+  setAccessToken,
+} from '@/utils/fetch';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import formatAssignors, { Assignors } from '@/utils/formatAssignors';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -13,18 +21,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
 import { DatePicker } from '../DatePicker/DatePicker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import FormInput from '../FormInput/FormInput';
-import {
-  handleCreatePayable,
-  handleFetchAssignors,
-  setAccessToken,
-} from '@/utils/fetch';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import formatAssignors, { Assignors } from '@/utils/formatAssignors';
 import Combobox from '../ComboBox/Combobox';
 
 const formSchema = z.object({
@@ -82,9 +81,13 @@ const RegisterPayable = () => {
     },
   });
 
+  console.log(form.getValues('assignor'));
+
   const handleSubmit = async (formData: FormData) => {
+    console.log(formData);
     try {
-      await handleCreatePayable(formData);
+      const { data, status } = await handleCreatePayable(formData);
+      console.log(status);
     } catch (error) {
       console.error(error);
     }
@@ -129,7 +132,13 @@ const RegisterPayable = () => {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Combobox options={assignorOptions} />
+                <Combobox
+                  form={form}
+                  name="assignor"
+                  label="Cedente"
+                  placeHolder="Selecionar cedente"
+                  options={assignorOptions}
+                />
               </div>
             </div>
             <CardFooter className="flex justify-between mt-8">
