@@ -12,6 +12,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import formatAssignors, { Assignors } from '@/utils/formatAssignors';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -25,6 +26,8 @@ import { DatePicker } from '../DatePicker/DatePicker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import FormInput from '../FormInput/FormInput';
 import Combobox from '../ComboBox/Combobox';
+import { Toaster } from '@/components/ui/sonner';
+import { AxiosError } from 'axios';
 
 const formSchema = z.object({
   value: z
@@ -81,14 +84,16 @@ const RegisterPayable = () => {
     },
   });
 
-  console.log(form.getValues('assignor'));
-
   const handleSubmit = async (formData: FormData) => {
-    console.log(formData);
     try {
-      const { data, status } = await handleCreatePayable(formData);
-      console.log(status);
+      const { status } = await handleCreatePayable(formData);
+      toast.success('Recebível cadastrado com sucesso!');
     } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.status === 400) {
+          toast.error('Teste');
+        }
+      }
       console.error(error);
     }
   };
@@ -155,6 +160,7 @@ const RegisterPayable = () => {
           </form>
         </Form>
       </CardContent>
+      <Toaster />
     </Card>
   );
 };

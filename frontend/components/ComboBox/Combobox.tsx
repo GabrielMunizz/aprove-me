@@ -56,7 +56,7 @@ const Combobox = <T extends string>({
                   className="w-[300px] justify-between"
                 >
                   {field.value
-                    ? options.find((option) => option.label === field.value)
+                    ? options.find((option) => option.value === field.value)
                         ?.label
                     : 'Selecionar cedente'}
                   <ChevronsUpDown className="opacity-50" />
@@ -73,10 +73,8 @@ const Combobox = <T extends string>({
                       <CommandItem
                         key={option.value}
                         value={option.label}
-                        onSelect={(currentValue) => {
-                          field.onChange(
-                            currentValue === field.value ? '' : currentValue
-                          );
+                        onSelect={() => {
+                          field.onChange(option.value);
                           setOpen(false);
                         }}
                       >
@@ -84,7 +82,7 @@ const Combobox = <T extends string>({
                         <Check
                           className={cn(
                             'ml-auto',
-                            field.value === option.label
+                            field.value === option.value
                               ? 'opacity-100'
                               : 'opacity-0'
                           )}
