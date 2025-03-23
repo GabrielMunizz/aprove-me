@@ -60,6 +60,7 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
 
   const handleEdit = () => {
     setIsEdit(true);
+    return;
   };
 
   const handleSubmit = async (formData: FormData) => {
@@ -104,13 +105,16 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
     <Card className="w-[600px] px-2 mb-4">
       <CardHeader className="flex flex-row justify-between items-center w-full">
         <p className="font-semibold text-sm text-muted-foreground">{`ID: ${id}`}</p>
-        <Link href="" className="text-sm hover:text-[#005ee0]">
+        <Link
+          href=""
+          className="text-sm hover:text-[#005ee0] underline decoration-dotted"
+        >
           Ver informações do cedente
         </Link>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <form>
             <div className="flex w-full justify-start items-center gap-4">
               <div className="flex flex-col h-[100px]">
                 <FormInput
@@ -152,7 +156,14 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
               </Button>
               <Button
                 type={isEdit ? 'submit' : 'button'}
-                onClick={!isEdit ? handleEdit : undefined}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!isEdit) {
+                    handleEdit();
+                  } else {
+                    form.handleSubmit(handleSubmit)();
+                  }
+                }}
                 className={`${
                   !isEdit
                     ? 'bg-[#005ee0] hover:bg-[#1457b4]'

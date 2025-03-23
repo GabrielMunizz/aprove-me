@@ -44,12 +44,20 @@ export default function Home() {
         <RegisterPayable />
       </section>
 
-      <section>
-        {payables.length > 0
-          ? payables?.map((payable) => (
+      <section className="w-[90%] flex flex-col justify-start items-center">
+        <h2 className="font-bold text-lg mb-4 w-[70%] text-start">
+          Recebíveis
+        </h2>
+
+        <div className="w-[80%] grid grid-cols-2 justify-items-center">
+          {payables.length > 0 ? (
+            payables?.map((payable) => (
               <ListPayables payable={payable} key={payable.id} />
             ))
-          : null}
+          ) : (
+            <p>Não há recebíveis registrados</p>
+          )}
+        </div>
       </section>
     </main>
   );
