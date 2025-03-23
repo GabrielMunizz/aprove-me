@@ -86,12 +86,14 @@ const RegisterPayable = () => {
 
   const handleSubmit = async (formData: FormData) => {
     try {
-      const { status } = await handleCreatePayable(formData);
+      await handleCreatePayable(formData);
       toast.success('Recebível cadastrado com sucesso!');
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error?.status === 400) {
-          toast.error('Teste');
+        if (error?.status === 401) {
+          toast.error('Token expirado!');
+        } else {
+          toast.error('Ops! Um erro inesperado ocorreu');
         }
       }
       console.error(error);
