@@ -1,3 +1,5 @@
+'use client';
+
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { HTMLInputTypeAttribute, useState } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';

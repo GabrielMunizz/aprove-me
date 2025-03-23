@@ -17,14 +17,16 @@ import { SelectSingleEventHandler } from 'react-day-picker';
 interface DatePickerProps {
   value?: Date;
   onChange?: SelectSingleEventHandler;
+  disabled?: boolean;
 }
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
+export function DatePicker({ value, onChange, disabled }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={'outline'}
+          disabled={disabled}
           className={cn(
             'w-[300px] justify-start text-left font-normal',
             !value && 'text-muted-foreground'

@@ -60,7 +60,7 @@ const RegisterPayable = () => {
   }
   const router = useRouter();
   const { data } = useQuery({
-    queryKey: ['transactions'],
+    queryKey: ['assignors'],
     queryFn: async () => {
       const { data } = await handleFetchAssignors();
       if (data) {
@@ -119,7 +119,7 @@ const RegisterPayable = () => {
                   name="value"
                   label="Valor"
                   type="number"
-                  labelClassname="text-normal font-semibold text-sm"
+                  labelClassname="font-semibold text-sm"
                   placeholder="Digite o valor do recebível"
                 />
               </div>
@@ -129,7 +129,9 @@ const RegisterPayable = () => {
                   name="emissionDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Data</FormLabel>
+                      <FormLabel className="font-semibold text-sm">
+                        Data de emissão
+                      </FormLabel>
                       <DatePicker
                         value={field.value}
                         onChange={field.onChange}

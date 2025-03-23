@@ -45,7 +45,7 @@ const Combobox = <T extends string>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="text-sm font-semibold">{label}</FormLabel>
           <Popover open={open} onOpenChange={setOpen}>
             <FormControl>
               <PopoverTrigger asChild>

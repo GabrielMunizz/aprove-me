@@ -22,7 +22,6 @@ export class PayableController {
   @Roles('admin')
   @Post('payable')
   async createPayable(@Body() createPayableDto: CreatePayableDto) {
-    console.log('BODY ---> ', createPayableDto);
     return await this.payableService.create(createPayableDto);
   }
 
