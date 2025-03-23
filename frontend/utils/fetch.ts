@@ -42,3 +42,9 @@ export const handleFetchPayables = async () => {
 
   return data;
 };
+
+export const handleDeletePayable = async (id: string) => {
+  const { data } = await api.delete(`/integrations/payable/${id}`);
+
+  return data;
+};
