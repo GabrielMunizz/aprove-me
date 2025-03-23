@@ -51,6 +51,7 @@ export const handleDeletePayable = async (id: string) => {
 };
 
 export const handleUpdatePayable = async (payable: Payable) => {
+  console.log('payable ---->', payable);
   const { id, ...info } = payable;
   const { data } = await api.patch(`/integrations/payable/${id}`, info);
 

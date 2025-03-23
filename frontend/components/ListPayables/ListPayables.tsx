@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,6 +15,10 @@ import { useForm } from 'react-hook-form';
 import { DatePicker } from '../DatePicker/DatePicker';
 import Link from 'next/link';
 import { Payable } from '@/utils/types';
+import { handleDeletePayable, handleUpdatePayable } from '@/utils/fetch';
+import { Toaster } from '@/components/ui/sonner';
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   id: z.string(),
@@ -41,70 +45,127 @@ type ListPayablesProps = {
 };
 
 const ListPayables = ({ payable }: ListPayablesProps) => {
-  const { id, value = 0, emissionDate } = payable;
+  const { id, value = 0, emissionDate, assignorId } = payable;
+
+  const [isEdit, setIsEdit] = useState(false);
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       id,
       value: value.toFixed(2).toString(),
-      emissionDate,
+      emissionDate: new Date(emissionDate),
     },
   });
+
+  const handleEdit = () => {
+    setIsEdit(true);
+  };
+
+  const handleSubmit = async (formData: FormData) => {
+    const { value } = formData;
+    try {
+      await handleUpdatePayable({
+        ...formData,
+        value: Number(value),
+        assignorId,
+      });
+
+      setIsEdit(false);
+
+      toast('Recebível editado com sucesso!');
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.status === 401) {
+          toast.error('Token expirado!');
+        } else {
+          toast.error('Ops! Um erro inesperado ocorreu.');
+        }
+      }
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await handleDeletePayable(id);
+      toast('Recebível deletado com sucesso');
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.status === 401) {
+          toast.error('Token expirado!');
+        } else {
+          toast.error('Ops! Um erro inesperado ocorreu.');
+        }
+      }
+    }
+  };
   return (
     <Card className="w-[600px] px-2 mb-4">
       <CardHeader className="flex flex-row justify-between items-center w-full">
-        <p className="font-semibold text-sm">{`ID: ${id}`}</p>
-        <Link href="" className="text-sm">
+        <p className="font-semibold text-sm text-muted-foreground">{`ID: ${id}`}</p>
+        <Link href="" className="text-sm hover:text-[#005ee0]">
           Ver informações do cedente
         </Link>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <div className="flex w-full justify-start items-center gap-4">
-            <div className="flex flex-col h-[100px]">
-              <FormInput
-                form={form}
-                name="value"
-                label="Valor do recebível"
-                labelClassname="text-sm font-semibold"
-                placeholder="Digite seu login"
-              />
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <div className="flex w-full justify-start items-center gap-4">
+              <div className="flex flex-col h-[100px]">
+                <FormInput
+                  form={form}
+                  name="value"
+                  disabled={!isEdit}
+                  label="Valor do recebível"
+                  labelClassname="text-sm font-semibold"
+                  placeholder="Digite seu login"
+                />
+              </div>
+              <div className="flex flex-col h-[100px]">
+                <FormField
+                  control={form.control}
+                  name="emissionDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel className="text-sm font-semibold">
+                        Data de emissão:
+                      </FormLabel>
+                      <DatePicker
+                        value={field.value}
+                        disabled={!isEdit}
+                        onChange={field.onChange}
+                      />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-            <div className="flex flex-col h-[100px]">
-              <FormField
-                control={form.control}
-                name="emissionDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel className="text-sm font-semibold">
-                      Data de emissão:
-                    </FormLabel>
-                    <DatePicker
-                      value={field.value}
-                      disabled
-                      onChange={field.onChange}
-                    />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <CardFooter className="flex justify-end items-center mt-4 w-full gap-4 p-0">
-            <Button
-              type="submit"
-              className="w-[100px] bg-red-600 hover:bg-red-700 font-bold"
-            >
-              Excluir
-            </Button>
-            <Button
-              type="submit"
-              className="bg-[#005ee0] hover:bg-[#1457b4] font-bold w-[100px]"
-            >
-              Editar
-            </Button>
-          </CardFooter>
+
+            <CardFooter className="flex justify-between items-center mt-4 w-full gap-4 p-0">
+              <Button
+                type="button"
+                onClick={handleDelete}
+                className="w-[100px] bg-transparent hover:bg-transparent hover:text-black text-muted-foreground border-0 shadow-[none] font-bold underline"
+              >
+                Excluir
+              </Button>
+              <Button
+                type={isEdit ? 'submit' : 'button'}
+                onClick={!isEdit ? handleEdit : undefined}
+                className={`${
+                  !isEdit
+                    ? 'bg-[#005ee0] hover:bg-[#1457b4]'
+                    : 'bg-green-600 hover:bg-green-700'
+                } font-bold w-[100px]`}
+              >
+                {!isEdit ? 'Editar' : 'Salvar'}
+              </Button>
+            </CardFooter>
+          </form>
         </Form>
       </CardContent>
+      <Toaster />
     </Card>
   );
 };
