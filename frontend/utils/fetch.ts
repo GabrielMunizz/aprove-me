@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FormData } from '@/components/RegisterPayable/RegisterPayable';
+import { Payable } from './types';
 
 const baseURL = 'http://localhost:3001';
 
@@ -45,6 +46,13 @@ export const handleFetchPayables = async () => {
 
 export const handleDeletePayable = async (id: string) => {
   const { data } = await api.delete(`/integrations/payable/${id}`);
+
+  return data;
+};
+
+export const handleUpdatePayable = async (payable: Payable) => {
+  const { id, ...info } = payable;
+  const { data } = await api.patch(`/integrations/payable/${id}`, info);
 
   return data;
 };
