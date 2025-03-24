@@ -1,6 +1,11 @@
 import { IsNumber, IsUUID, IsDateString, IsNotEmpty } from 'class-validator';
 
 export class CreatePayableDto {
+  constructor(value: number, emissionDate: Date, assignorId: string) {
+    this.value = value;
+    this.emissionDate = emissionDate;
+    this.assignorId = assignorId;
+  }
   @IsNotEmpty({ message: 'É necessário fornecer o valor do recebível' })
   @IsNumber({}, { message: 'O valor do recebível deve ser um número' })
   value!: number;
