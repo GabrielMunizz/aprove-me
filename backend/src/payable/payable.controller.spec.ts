@@ -85,5 +85,62 @@ describe('PayableController', () => {
       expect(response).toHaveLength(2);
       expect(mockService).toHaveBeenCalledTimes(1);
     });
+
+    it('Should find a payables by ID', async () => {
+      const id = '150cff95-21ab-441a-9c20-11d4bb2712d1';
+      const mockPayables = {
+        id: '150cff95-21ab-441a-9c20-11d4bb2712d1',
+        value: 8732.73,
+        emissionDate: new Date('2025-03-26T03:00:00.000Z'),
+        assignorId: '7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2',
+        isDeleted: false,
+      };
+
+      const mockService = jest
+        .spyOn(service, 'findOne')
+        .mockResolvedValue(mockPayables);
+
+      const response = await controller.findOnePayable(id);
+
+      expect(response).toEqual(mockPayables);
+      expect(mockService).toHaveBeenCalledTimes(1);
+      expect(mockService).toHaveBeenCalledWith(id);
+    });
+
+    it('Should update a payables by ID', async () => {
+      const id = '150cff95-21ab-441a-9c20-11d4bb2712d1';
+
+      const mockResponse = {
+        id: '150cff95-21ab-441a-9c20-11d4bb2712d1',
+        value: 150,
+        emissionDate: new Date('2025-03-26T03:00:00.000Z'),
+        assignorId: '7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2',
+        isDeleted: false,
+      };
+
+      const mockService = jest
+        .spyOn(service, 'update')
+        .mockResolvedValue(mockResponse);
+
+      const response = await controller.updatePayable(id, mockResponse);
+
+      expect(response).toEqual(mockResponse);
+      expect(mockService).toHaveBeenCalledWith(id, mockResponse);
+    });
+
+    it('Should delete a payables by ID', async () => {
+      const id = '150cff95-21ab-441a-9c20-11d4bb2712d1';
+
+      const mockResponse = { message: 'Recebível deletado com sucesso!' };
+
+      const mockService = jest
+        .spyOn(service, 'remove')
+        .mockResolvedValue(mockResponse);
+
+      const response = await controller.deletePayable(id);
+
+      expect(response).toEqual(mockResponse);
+      expect(mockService).toHaveBeenCalledWith(id);
+    });
   });
 });
