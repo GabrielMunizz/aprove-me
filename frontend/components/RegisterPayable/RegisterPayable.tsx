@@ -9,7 +9,7 @@ import {
   handleFetchAssignors,
   setAccessToken,
 } from '@/utils/fetch';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import formatAssignors, { Assignors } from '@/utils/formatAssignors';
 import { toast } from 'sonner';
@@ -58,7 +58,10 @@ const RegisterPayable = () => {
       setAccessToken(JSON.parse(token));
     }
   }
+
+  const queryClient = useQueryClient();
   const router = useRouter();
+
   const { data } = useQuery({
     queryKey: ['assignors'],
     queryFn: async () => {
@@ -88,6 +91,7 @@ const RegisterPayable = () => {
     try {
       await handleCreatePayable(formData);
       toast.success('Recebível cadastrado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['payables'] });
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.status === 401) {

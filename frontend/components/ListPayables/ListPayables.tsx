@@ -19,6 +19,7 @@ import { handleDeletePayable, handleUpdatePayable } from '@/utils/fetch';
 import { Toaster } from '@/components/ui/sonner';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 
 const formSchema = z.object({
   id: z.string(),
@@ -47,6 +48,8 @@ type ListPayablesProps = {
 const ListPayables = ({ payable }: ListPayablesProps) => {
   const { id, value = 0, emissionDate, assignorId } = payable;
 
+  const queryClient = useQueryClient();
+
   const [isEdit, setIsEdit] = useState(false);
 
   const form = useForm<FormData>({
@@ -74,7 +77,8 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
 
       setIsEdit(false);
 
-      toast('Recebível editado com sucesso!');
+      toast.success('Recebível editado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['payables'] });
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.status === 401) {
@@ -90,7 +94,8 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
   const handleDelete = async () => {
     try {
       await handleDeletePayable(id);
-      toast('Recebível deletado com sucesso');
+      toast.success('Recebível deletado com sucesso');
+      queryClient.invalidateQueries({ queryKey: ['payables'] });
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.status === 401) {
