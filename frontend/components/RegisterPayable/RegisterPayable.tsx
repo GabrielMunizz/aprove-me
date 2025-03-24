@@ -91,6 +91,7 @@ const RegisterPayable = () => {
     try {
       await handleCreatePayable(formData);
       toast.success('Recebível cadastrado com sucesso!');
+      form.reset();
       queryClient.invalidateQueries({ queryKey: ['payables'] });
     } catch (error) {
       if (error instanceof AxiosError) {
