@@ -72,7 +72,7 @@ export class PayableController {
 
   @Roles('admin')
   @Post('payable/batch')
-  createPayableBatch(@Body() createPayableDto: CreatePayableDto[]) {
-    return createPayableDto;
+  createPayableBatch(@Body() createPayableDto: CreatePayableDto) {
+    return this.payableService.createPayableBatch(createPayableDto);
   }
 }

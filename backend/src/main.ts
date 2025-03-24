@@ -15,7 +15,7 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://rabbitmq:5672'],
+      urls: ['amqp://aproveme:aproveme@rabbitmq:5672'],
       queue: 'payables-batch-queue',
     },
   });

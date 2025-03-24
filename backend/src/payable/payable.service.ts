@@ -1,13 +1,17 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Inject } from '@nestjs/common';
 import { CreatePayableDto } from './dto/create-payable.dto';
 import { UpdatePayableDto } from './dto/update-payable.dto';
 import { PrismaService } from 'src/prisma_service/prisma.service';
 import { AccountPayable } from '@prisma/client';
 import { MessageType } from 'types/MessageType';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class PayableService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject('PAYABLES_BATCH_SERVICE') private rabbitClient: ClientProxy,
+  ) {}
 
   async create(
     createPayableDto: CreatePayableDto,
@@ -144,5 +148,10 @@ export class PayableService {
       console.error(error);
       throw new HttpException('Falha ao recuperar recebível', 500);
     }
+  }
+
+  createPayableBatch(createPayableDto: CreatePayableDto) {
+    this.rabbitClient.emit('payable-placed', createPayableDto);
+    return { message: 'Payable placed' };
   }
 }

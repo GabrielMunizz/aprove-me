@@ -38,6 +38,21 @@ services:
     volumes:
       - ./frontend:/app-frontend
       - /app-frontend/node_modules
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: 'rabbitmq:management'
+    container_name: backend-rabbitmq
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    environment:
+      RABBITMQ_DEFAULT_USER: aproveme
+      RABBITMQ_DEFAULT_PASS: aproveme
+      RABBITMQ_DEFAULT_VHOST: '/'
     networks:
       - app-network
 
