@@ -69,4 +69,10 @@ export class PayableController {
   async recoverDeletedPayable(@Param('id') id: string) {
     return await this.payableService.recoverPayable(id);
   }
+
+  @Roles('admin')
+  @Post('payable/batch')
+  createPayableBatch(@Body() createPayableDto: CreatePayableDto[]) {
+    return createPayableDto;
+  }
 }
