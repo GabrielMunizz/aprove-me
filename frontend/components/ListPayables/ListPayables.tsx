@@ -114,7 +114,7 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
           href=""
           className="text-sm hover:text-[#005ee0] underline decoration-dotted"
         >
-          Ver informações do cedente
+          Ver detalhes
         </Link>
       </CardHeader>
       <CardContent>
