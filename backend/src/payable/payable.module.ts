@@ -6,23 +6,23 @@ import { JwtService } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PayableConsumerService } from './payable.consumer.service';
 
-@Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'PAYABLES_BATCH_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://rabbitmq:5672'],
-          queue: 'payables-batch-queue',
-          queueOptions: {
-            durable: true,
-          },
-          noAck: false,
-        },
+export const PayableBatchService = ClientsModule.register([
+  {
+    name: 'PAYABLES_BATCH_SERVICE',
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://aproveme:aproveme@rabbitmq:5672'],
+      queue: 'payables-batch-queue',
+      queueOptions: {
+        durable: true,
       },
-    ]),
-  ],
+      noAck: true,
+    },
+  },
+]);
+
+@Module({
+  imports: [PayableBatchService],
   controllers: [PayableController],
   providers: [
     PayableService,

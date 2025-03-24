@@ -151,7 +151,8 @@ export class PayableService {
   }
 
   createPayableBatch(createPayableDto: CreatePayableDto) {
-    this.rabbitClient.emit('payable-placed', createPayableDto);
+    console.log('PAYABLE SERVICE EMIT ---> ', createPayableDto);
+    this.rabbitClient.emit('payables-batch-queue', createPayableDto);
     return { message: 'Payable placed' };
   }
 }

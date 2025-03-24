@@ -53,6 +53,7 @@ services:
       RABBITMQ_DEFAULT_USER: aproveme
       RABBITMQ_DEFAULT_PASS: aproveme
       RABBITMQ_DEFAULT_VHOST: '/'
+      RABBITMQ_LOGS: 'debug'
     networks:
       - app-network
 
