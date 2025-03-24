@@ -5,7 +5,7 @@ import Image from 'next/image';
 const Header = () => {
   return (
     <header className="flex justify-center items-center w-full px-8 mt-8">
-      <div className="w-[80%]  px-4">
+      <div className="w-[1280px]">
         <Image
           src={BANKME_LOGO}
           alt="Bankme Logo"
