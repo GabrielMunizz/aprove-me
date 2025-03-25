@@ -6,17 +6,22 @@ import RegisterPayable from '@/components/RegisterPayable/RegisterPayable';
 import { useQuery } from '@tanstack/react-query';
 import { handleFetchPayables } from '@/utils/fetch';
 import { Payable } from '@/utils/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { TailSpin } from 'react-loader-spinner';
 
 export default function Home() {
+  const router = useRouter();
   const [payables, setPayables] = useState<Payable[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useQuery({
     queryKey: ['payables'],
     queryFn: async () => {
-      const response = await handleFetchPayables();
+      const { data } = await handleFetchPayables();
 
-      setPayables(response);
-      return response;
+      setPayables(data);
+      return payables;
     },
   });
 
@@ -27,7 +32,18 @@ export default function Home() {
     return cresDate;
   });
 
-  return (
+  console.log(sortedPayables);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') ?? undefined;
+    if (!token) {
+      router.push('/login');
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  return !isLoading ? (
     <main className="flex flex-col w-full justify-start items-center">
       <Header />
       <section className="flex flex-col w-full justify-center items-center h-[70vh]">
@@ -41,16 +57,16 @@ export default function Home() {
           </div>
 
           <div className="w-full grid grid-cols-2 justify-items-center">
-            {sortedPayables.length > 0 ? (
-              sortedPayables?.map((payable) => (
-                <ListPayables payable={payable} key={payable.id} />
-              ))
-            ) : (
-              <p>Não há recebíveis registrados</p>
-            )}
+            {sortedPayables?.map((payable) => (
+              <ListPayables payable={payable} key={payable.id} />
+            ))}
           </div>
         </div>
       </section>
+    </main>
+  ) : (
+    <main className="w-full h-[50vh] flex justify-center items-center">
+      <TailSpin width={30} color="blue" />
     </main>
   );
 }

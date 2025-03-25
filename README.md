@@ -1,261 +1,358 @@
-<p align="center">
-  <img src="./assets/logo-bankme.png" alt="Logo Bankme" width="91" height="108">
-</p>
-<h1 align="center">
-  Aprove-me
-</h1>
+# Bankme - Aprove-me
 
-## Sumário
+## Sobre o teste técnico da Bankme:
 
-- [Sumário](#sumário)
-- [❤️ Bem vindos](#️-bem-vindos)
-- [🚀 Vamos nessa!](#-vamos-nessa)
-  - [Dicas](#dicas)
-  - [Como você deverá desenvolver?](#como-você-deverá-desenvolver)
-  - [Qual o tempo para entregar?](#qual-o-tempo-para-entregar)
-- [💻 O Problema](#-o-problema)
-  - [Estrutura de um recebível](#estrutura-de-um-recebível)
-  - [Estrutrua de um cedente](#estrutrua-de-um-cedente)
-- [💾 Back-end](#-back-end)
-  - [Nível 1 - Validação](#nível-1---validação)
-  - [Nível 2 - Persistência](#nível-2---persistência)
-  - [Nível 3 - Testes](#nível-3---testes)
-  - [Nível 4 - Autenticação](#nível-4---autenticação)
-  - [Nível 5 - Gerenciamento de permissões](#nível-5---gerenciamento-de-permissões)
-  - [Nível 6 - Infra e Doc](#nível-6---infra-e-doc)
-  - [Nível 7 - Lotes](#nível-7---lotes)
-  - [Nível 8 - Resiliência](#nível-8---resiliência)
-  - [Nível 9 - Cloud](#nível-9---cloud)
-  - [Nível 10 - Infra as a Code](#nível-10---infra-as-a-code)
-- [🖥️ Front-end](#️-front-end)
-  - [Nível 1 - Cadastro](#nível-1---cadastro)
-  - [Nível 2 - Conectando na API](#nível-2---conectando-na-api)
-  - [Nível 3 - Listando](#nível-3---listando)
-  - [Nível 4 - Autenticação](#nível-4---autenticação-1)
-  - [Nível 5 - Testes](#nível-5---testes)
+![allDevices.png](./README_thumbs/allDevices.png)
 
-## ❤️ Bem vindos 
+Este teste técnico foi desenvolvido com as seguintes tecnologias:
 
-Olá, tudo certo?
+- **Next.js**: Framework React para renderização do lado servidor (SSR) e otimização automática de páginas. Permite criar aplicativos rápidos e escaláveis..
+- **Tailwind CSS**: Framework CSS utilitário para criar layouts responsivos e estilizar componentes de forma rápida e eficiente, sem escrever CSS personalizado.
+- **Nest.js**: Framework Node.js para criar back-ends escaláveis usando TypeScript. Organiza o código de forma modular e facilita a integração com outras ferramentas.
+- **Docker**: Plataforma para criar, testar e rodar aplicativos em containers. Garante consistência entre os ambientes de desenvolvimento e produção.
+- **RabbitMQ**: Broker de mensagens que gerencia filas e facilita a comunicação assíncrona entre serviços. Garante alta disponibilidade e escalabilidade em sistemas distribuídos.
+- **Prisma:** ORM para Node.js e TypeScript que simplifica o acesso ao banco de dados. Ele gera consultas SQL automaticamente, oferece tipagem forte e facilita a integração com bancos relacionais.
 
-Seja bem vindo ao teste de seleção para novos desenvolvedores na Bankme!
+O teste inclui:
 
-Estamos honrados que você tenha chegado até aqui!
+- **Tela de login**: **user**: _aprovame_ **password**: _aprovame_.
+- **Home**: Página principal onde se cadastram e são exibidos os recebíveis.
+- **Detalhes do recebível**: ID do recebível, valor, data de emissão e nome do cedente.
+- **Detalhes do cedente**: ID do cedente, nome, e-mail, telefone e documento (CPF ou CNPJ) do cedente.
 
-Prepare aquele ☕️ , e venha conosco codar e se divertir!
+---
 
-## 🚀 Vamos nessa!
+## Antes de começar:
 
-Este é um teste para analisarmos como você desempenha ao entender, traduzir, resolver e entregar um código que resolve um problema.
+- Certifique-se que tem o **Docker** instalado no seu computador. Caso não tenha, siga a documentação a seguir: [Guia de instalação do Docker](https://docs.docker.com/get-docker/).
+- Verifique se as portas 3000 e 3001 estão liberadas.
 
-### Dicas
+## Como Executar o Projeto Localmente:
 
-- Documente;
-- Pergunte;
-- Mostre a sua linha de reciocínio;
-- Trabalhe bem o seu README.md;
+1. Clone este repositório:
 
-### Como você deverá desenvolver?
+```jsx
+git clone https://git@github.com:GabrielMunizz/aprove-me.git
+```
 
-1. Faça um clone deste projeto em seu GitHub pessoal;
-2. Realize as implementações de acordo com cada um dos níveis;
-3. Faça pequenos commits;
-4. Depois de sentir que fez o seu máximo, faça um PR para o repositório original. (Para conseguir fazer isso, não se esqueça de fazer um Fork antes de iniciar tudo!)
+1. Entre na pasta do projeto:
 
-**IMPORTANTE!**
+```jsx
+cd aprove-me
+```
 
-Não significa que você precisa implementar todos os níveis para ser aprovado no processo!
+1. Mude para a branch **muniz-branch**:
 
-Faça até onde se sentir confortável.
+```jsx
+git checkout muniz-branch
+```
 
-### Qual o tempo para entregar?
+1. Monte os containers docker com o comando:
 
-Nós temos um período para fechar a vaga em questão. Então, quanto antes você enviar, mais cuidado podemos ter na revisão do seu teste.
+```jsx
+docker compose up --build
+```
 
-Mas sabemos que o dia a dia é corrido, faça de forma que fique confortável para você!
+1. Abra o navegador em:
 
-Mas não desista! Envie até onde conseguir.
+```jsx
+http://localhost:3000
+```
 
-## 💻 O Problema
+1. Faça login com o usuário e senha abaixo:
 
-Um cliente da Bankme solicitou uma nova funcionalidade, relacionada a recebíveis.
+   ![image.png](./README_thumbs/image.png)
 
-Todos os dias esse cliente movimenta vários recebíveis, e nosso time de operações estava ficando maluco tendo que cadastrar tudo isso de forma manual!
+```jsx
+login: aprovame;
+password: aprovame;
+```
 
-Os recebíveis são representações digitais de um documento que simula uma dívida a ser recebida. E para Bankme, é importante ter essas informações como parte do fluxo comercial que temos com este cliente.
+1. Para parar a aplicação, use `Ctrl+C` no terminal onde o Docker Compose está rodando, ou execute `docker-compose down` para parar e remover os contêineres.
 
-### Estrutura de um recebível
+## Rotas do backend:
 
-| CAMPO        | TIPO          | DESCRIÇÃO                                 |
-|--------------|---------------|-------------------------------------------|
-| id           | string (UUID) | É a identificação de um recebível.        |
-| value        | float         | É o valor do recebível.                   |
-| emissionDate | date          | É a data de emissão do recebível.         |
-| assignor     | string (UUID) | Representa a identificação de um cedente. |
+### **Payable**:
 
-### Estrutrua de um cedente
+Tipagem:
 
-| CAMPO    | TIPO          | DESCRIÇÃO                             |
-|----------|---------------|---------------------------------------|
-| id       | string (UUID) | É a identificação de um cedente.      |
-| document | string(30)    | É o documento CPF ou CNPJ do cedente. |
-| email    | string(140)   | É o email do cedente.                 |
-| phone    | string(20)    | É o telefone do cedente.              |
-| name     | string(140)   | É a nome ou razão social do cedente.  |
+```jsx
+value: number;
+emissionDate: Date;
+assignorId: uuid;
+```
 
-## 💾 Back-end
+1. Cadastro de recebível:
 
-### Nível 1 - Validação
+```jsx
+POST http://localhost:3001/integrations/payable
 
-Implemente uma API utilizando NestJS que receba dados de um recebível e de um cedente.
-
-A rota para este cadastro é:
-
-`POST /integrations/payable`
-
-Essa rota deverá receber todas as informações. É importante garantir a validação destes dados:
-
-1. Nenhum campo pode ser nulo;
-2. Os ids devem ser do tipo UUID;
-3. As strings não podem ter caracteres a mais do que foi definido em sua estrutura;
-
-Se algum campo não estiver preenchido corretamente, deve-se retornar uma mensagem para o usuário mostrando qual o problema foi encontrado em qual campo.
-
-Se todos os dados estiverem validados. Apenas retorne todos os dados em um formato JSON.
-
-### Nível 2 - Persistência
-
-Utilize o Prisma, para incluir um novo banco de dados SQLite.
-
-Crie a estrutura de acordo com o que foi definido.
-
-Caso os dados estejam válidos, cadastre-os.
-
-Crie 2 novas rotas:
-
-`GET /integrations/payable/:id`
-
-`GET /integrations/assignor/:id`
-
-Para que seja possível retornar pagáveis e cedentes de forma independete.
-
-Inclua também rotas para as outras operações:
-
-- Edição;
-- Exclusão;
-- Cadastro;
-
-### Nível 3 - Testes
-
-Crie testes unitários para cada arquivo da aplicação. Para cada nova implementação a seguir, também deve-se criar os testes.
-
-### Nível 4 - Autenticação
-
-Inclua um sistema de autenticação em todas as rotas.
-
-Para isso, crie uma nova rota:
-
-`POST /integrations/auth` que deve receber:
-
-```json
+Exemplo
+Body:
 {
-  "login": "aprovame",
-  "password": "aprovame"
+	"value": 158.97,
+  "emissionDate": "2025-03-23T00:00:28.403Z",
+  "assignorId": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+ }
+```
+
+1. Listar recebíveis:
+
+```jsx
+GET http://localhost:3001/integrations/payable
+
+Exemplo de retorno:
+[
+	{
+		"id": "150cff95-21ab-441a-9c20-11d4bb2712d1",
+		"value": 8732.73,
+		"emissionDate": "2025-03-26T03:00:00.000Z",
+		"assignorId": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+		"isDeleted": false
+	},
+	{
+		"id": "5da6e0e8-4fea-4447-bd4b-c82c5dd77fd0",
+		"value": 335,
+		"emissionDate": "2025-03-23T00:00:28.403Z",
+		"assignorId": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+		"isDeleted": false
+	},
+]
+```
+
+1. Recebível por ID:
+
+```jsx
+GET http://localhost:3001/integrations/payable/:id
+
+Exemplo de retorno:
+{
+	"id": "5da6e0e8-4fea-4447-bd4b-c82c5dd77fd0",
+	"value": 335,
+	"emissionDate": "2025-03-23T00:00:28.403Z",
+	"assignorId": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+	"isDeleted": false
+ }
+```
+
+1. Alterar recebível (Update):
+
+```jsx
+PATCH http://localhost:3001/integrations/payable/:id
+
+Exemplo de retorno:
+{
+	"id": "5da6e0e8-4fea-4447-bd4b-c82c5dd77fd0",
+	"value": 335,
+	"emissionDate": "2025-03-23T00:00:28.403Z",
+	"assignorId": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+	"isDeleted": false
+ }
+```
+
+1. Deletar recebível (Soft delete):
+
+```jsx
+DELETE http://localhost:3001/integrations/payable/:id
+
+Exemplo de retorno:
+{ message: 'Recebível deletado com sucesso!' }
+```
+
+1. Listar recebíveis deletados:
+
+```jsx
+GET http://localhost:3001/integrations/payable/recover/all
+
+Exemplo de retorno:
+[
+	{
+		"id": "a77827b3-8298-46bb-88e1-6079c019c722",
+		"value": 2560,
+		"emissionDate": "2025-03-10T03:00:00.000Z",
+		"assignorId": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+		"isDeleted": true
+	},
+	{
+		"id": "6fa29aee-e29f-457e-9d00-1bc35bfd6a71",
+		"value": 135.78,
+		"emissionDate": "2025-03-22T22:03:00.210Z",
+		"assignorId": "1a62f746-0e89-4c39-9749-6859d91ed8c9",
+		"isDeleted": true
+	},
+]
+```
+
+1. Recuperar recebível deletado:
+
+```jsx
+PATCH http://localhost:3001/integrations/payable/recover/:id
+
+Exemplo de retorno:
+{ message: 'Recebível recuperado com sucesso!' }
+```
+
+### Assignor:
+
+Tipagem:
+
+```jsx
+"document": string,
+"email": string,
+"phone": string,
+"name": string,
+```
+
+1. Cadastro de cedente:
+
+```jsx
+POST http://localhost:3001/integrations/assignor
+
+Exemplo
+Body:
+{
+  "document": "99999999999",
+  "email": "teste@teste.com",
+  "phone": "(32) 984863437",
+  "name": "Testando da Silva"
 }
 ```
 
-Com essas credenciais o endpoint deverá retornar um JWT com o tempo de expiração de 1 minuto.
+1. Listar cedentes:
 
-Reescreva as regras de todas as outras rotas para que o JWT seja enviado como parâmetro do `Header` da requisição.
+```jsx
+GET http://localhost:3001/integrations/assignor
 
-Se o JWT estiver válido, então os dados devem ser mostrados, caso contrário, deve-se mostrar uma mensagem de "Não autorizado".
+Exemplo de retorno:
+[
+	{
+		"id": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+		"document": "99999999999",
+		"email": "testando@teste.com",
+		"phone": "99999999999",
+		"name": "Testando da Silva",
+		"isDeleted": false
+	},
+	{
+		"id": "1a62f746-0e89-4c39-9749-6859d91ed8c9",
+		"document": "99999999999",
+		"email": "teste@teste.com",
+		"phone": "99999999999",
+		"name": "Teste Oliveira",
+		"isDeleted": false
+	},
+]
+```
 
-### Nível 5 - Gerenciamento de permissões
+1. Cedente por ID:
 
-Agora, crie um sistema de gerenciamento de permissões.
+```jsx
+GET http://localhost:3001/integrations/assignor/:id
 
-Crie um novo cadastro de permissões. Esse cadastro deve armazenar: `login` e `password`.
+Exemplo de retorno:
+ {
+		"id": "1a62f746-0e89-4c39-9749-6859d91ed8c9",
+		"document": "99999999999",
+		"email": "teste@teste.com",
+		"phone": "99999999999",
+		"name": "Teste Oliveira",
+		"isDeleted": false
+	}
+```
 
-Refatore o endpoint de autenticação para que sempre se gere JWTs se login e senha estiverem cadastrados no Banco de Dados.
+1. Alterar cedente (Update):
 
-### Nível 6 - Infra e Doc
+```jsx
+PATCH http://localhost:3001/integrations/assignor/:id
 
-Crie um `Dockerfile` para sua API.
+Exemplo de retorno:
+ {
+		"id": "1a62f746-0e89-4c39-9749-6859d91ed8c9",
+		"document": "99999999999",
+		"email": "teste@teste.com",
+		"phone": "99999999999",
+		"name": "Teste Oliveira",
+		"isDeleted": false
+	}
+```
 
-Crie um `docker-compose.yaml` para iniciar o seu projeto.
+1. Deletar cedente (Soft delete):
 
-Documente tudo o que foi feito até aqui:
+```jsx
+DELETE http://localhost:3001/integrations/assignor/:id
 
-- Como preparar o ambiente;
-- Como instalar as dependência;
-- Como rodar o projeto;
+Exemplo de retorno:
+{ message: 'Cedente deletado com sucesso!' }
+```
 
-### Nível 7 - Lotes
+1. Listar cedentes deletados:
 
-Crie um novo recurso de processamento de pagáveis por lotes.
+```jsx
+GET http://localhost:3001/integrations/assignor/recover/all
 
-A ideia é que o cliente possa enviar um GRANDE número de pagáveis de uma única vez. E isso, não poderá ser processado de forma síncrona.
+Exemplo de retorno:
+[
+	{
+		"id": "7c9a1eb0-20e0-4f4f-a62a-8c459b6385d2",
+		"document": "99999999999",
+		"email": "testando@teste.com",
+		"phone": "99999999999",
+		"name": "Testando da Silva",
+		"isDeleted": true
+	},
+	{
+		"id": "1a62f746-0e89-4c39-9749-6859d91ed8c9",
+		"document": "99999999999",
+		"email": "teste@teste.com",
+		"phone": "99999999999",
+		"name": "Teste Oliveira",
+		"isDeleted": true
+	},
+]
+```
 
-Crie um novo endpoint:
+1. Recuperar cedente deletado:
 
-`POST integrations/payable/batch`
+```jsx
+PATCH http://localhost:3001/integrations/assignor/recover/:id
 
-Neste endpoint deve ser possível receber lotes de até 10.000 pagáveis.
+Exemplo de retorno:
+{ message: 'Cedente recuperado com sucesso!' }
+```
 
-Ao receber todos os pagáveis, deve-se postá-los em uma fila.
+### Auth(login)
 
-Crie um consumidor para esta fila que deverá pegar pagável por pagável, criar seu registro no banco de dados, e ao final do processamento do lote enviar um e-mail de lote processado, com o número de sucesso e falhas.
+Tipagem:
 
-### Nível 8 - Resiliência
+```jsx
+"login": string,
+"password": string,
+```
 
-Caso não seja possível processar algum ítem do lote, coloque-o novamente na fila. Isso deve ocorrer por até 4 vezes. Depois, esse ítem deve ir para uma "Fila Morta" e um e-mail deve ser disparado para o time de operações.
+1. Login de usuário:
 
-### Nível 9 - Cloud
+```jsx
+POST http://localhost:3001/integrations/auth
 
-Crie uma pipeline de deploy da aplicação em alguma estrutura de Cloud. (AWS, Google, Azure...)
+Exemplo
+Body:
+{
+	"login": "aprovame",
+	"password": "aprovame"
+}
 
-### Nível 10 - Infra as a Code
+Retorno:
+{
+	"accessToken": "token"
+}
+```
 
-Crie uma estrutura em terraforma que monte a infra-estrutura desejada.
+# Entre em contato comigo:
 
-## 🖥️ Front-end
+[Portfolio](https://gabrielmunizz.github.io/)
 
-### Nível 1 - Cadastro
+[LinkedIn](https://www.linkedin.com/in/gabriel-muniz-dev/)
 
-Crie uma interface na qual é possível cadastrar os pagáveis.
+[GitHub](https://github.com/GabrielMunizz)
 
-É importante que sua interface previna o cadastro de campos vazios, ou que não estejam nas regras definidas anteriormente.
-
-Exiba o pagável cadastrado em uma nova tela.
-
-### Nível 2 - Conectando na API
-
-Conecte a seu Front-end a API que foi criada, e faça o cadastro de um pagável refletir na sua API.
-
-Faça também uma tela para cadastro do cedente.
-
-Altere o cadastro inicial para que o campo `assignor` seja um `combobox` no qual seja possível selecionar um cedente.
-
-### Nível 3 - Listando
-
-Agora faça um sistema de listagens de pagáveis. Mostrando apenas: `id`, `value` e `emissionDate`.
-
-Para cada ítem da lista, coloque um link que mostra os detalhes do pagável.
-
-Além disso, coloque opções de editar e excluir.
-
-Nessa página de detalhes, inclua um novo link para exibir os dados do cedente.
-
-Todos os dados devem vir da API.
-
-### Nível 4 - Autenticação
-
-Implemente agora o sistema de login e senha para poder acessar as suas rotas de forma autenticada.
-
-Armazene o token no `localStorage` do seu navegador.
-
-Caso o token expire, redirecione o usuário para a página de login.
-
-### Nível 5 - Testes
-
-Crie testes para sua aplicação Front-end.
+Email: gabrielmfd@gmail.com

@@ -39,9 +39,9 @@ export const handleCreatePayable = async (formData: FormData) => {
 };
 
 export const handleFetchPayables = async () => {
-  const { data } = await api.get('/integrations/payable');
+  const { data, status } = await api.get('/integrations/payable');
 
-  return data;
+  return { data, status };
 };
 
 export const handleDeletePayable = async (id: string) => {

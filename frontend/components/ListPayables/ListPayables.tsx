@@ -20,6 +20,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   id: z.string(),
@@ -52,6 +53,8 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const router = useRouter();
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -83,6 +86,7 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
       if (error instanceof AxiosError) {
         if (error?.status === 401) {
           toast.error('Token expirado!');
+          router.push('/login');
         } else {
           toast.error('Ops! Um erro inesperado ocorreu.');
         }
@@ -100,6 +104,7 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
       if (error instanceof AxiosError) {
         if (error?.status === 401) {
           toast.error('Token expirado!');
+          router.push('/login');
         } else {
           toast.error('Ops! Um erro inesperado ocorreu.');
         }

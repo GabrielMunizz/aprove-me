@@ -52,6 +52,7 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>;
 
 const RegisterPayable = () => {
+  const router = useRouter();
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token');
     if (token) {
@@ -60,7 +61,6 @@ const RegisterPayable = () => {
   }
 
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   const { data } = useQuery({
     queryKey: ['assignors'],
@@ -97,6 +97,7 @@ const RegisterPayable = () => {
       if (error instanceof AxiosError) {
         if (error?.status === 401) {
           toast.error('Token expirado!');
+          router.push('/login');
         } else {
           toast.error('Ops! Um erro inesperado ocorreu');
         }
