@@ -3,7 +3,7 @@
 import Header from '@/components/Header/Header';
 import ListPayables from '@/components/ListPayables/ListPayables';
 import RegisterPayable from '@/components/RegisterPayable/RegisterPayable';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { handleFetchPayables } from '@/utils/fetch';
 import { Payable } from '@/utils/types';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import { TailSpin } from 'react-loader-spinner';
 
 export default function Home() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [payables, setPayables] = useState<Payable[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,13 +33,12 @@ export default function Home() {
     return cresDate;
   });
 
-  console.log(sortedPayables);
-
   useEffect(() => {
     const token = localStorage.getItem('token') ?? undefined;
     if (!token) {
       router.push('/login');
     } else {
+      queryClient.invalidateQueries({ queryKey: ['payables'] });
       setIsLoading(false);
     }
   }, []);
