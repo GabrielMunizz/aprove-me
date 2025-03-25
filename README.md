@@ -2,7 +2,7 @@
 
 ## Sobre o teste técnico da Bankme:
 
-![allDevices.png](./README_thumbs/allDevices.png)
+![allDevices.png](./README-thumbs/allDevices.png)
 
 Este teste técnico foi desenvolvido com as seguintes tecnologias:
 
@@ -61,7 +61,7 @@ http://localhost:3000
 
 1. Faça login com o usuário e senha abaixo:
 
-   ![image.png](./README_thumbs/image.png)
+   ![image.png](./README-thumbs/image.png)
 
 ```jsx
 login: aprovame;
