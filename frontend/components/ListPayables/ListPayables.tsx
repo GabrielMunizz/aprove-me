@@ -116,7 +116,7 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
       <CardHeader className="flex flex-row justify-between items-center w-full">
         <p className="font-semibold text-sm text-muted-foreground">{`ID: ${id}`}</p>
         <Link
-          href=""
+          href={`/payable/${id}`}
           className="text-sm hover:text-[#005ee0] underline decoration-dotted"
         >
           Ver detalhes
@@ -133,7 +133,6 @@ const ListPayables = ({ payable }: ListPayablesProps) => {
                   disabled={!isEdit}
                   label="Valor do recebível"
                   labelClassname="text-sm font-semibold"
-                  placeholder="Digite seu login"
                 />
               </div>
               <div className="flex flex-col h-[100px]">

@@ -27,6 +27,12 @@ export const handleFetchAssignors = async () => {
   return { data };
 };
 
+export const handleFetchAssignorById = async (id: string) => {
+  const { data } = await api.get(`/integrations/assignor/${id}`);
+
+  return data;
+};
+
 export const handleCreatePayable = async (formData: FormData) => {
   const { value, emissionDate, assignor } = formData;
   const { data, status } = await api.post('/integrations/payable', {
@@ -44,6 +50,12 @@ export const handleFetchPayables = async () => {
   return { data, status };
 };
 
+export const handleFetchPayableByID = async (id: string) => {
+  const { data } = await api.get(`/integrations/payable/${id}`);
+
+  return data;
+};
+
 export const handleDeletePayable = async (id: string) => {
   const { data } = await api.delete(`/integrations/payable/${id}`);
 
@@ -51,7 +63,6 @@ export const handleDeletePayable = async (id: string) => {
 };
 
 export const handleUpdatePayable = async (payable: Payable) => {
-  console.log('payable ---->', payable);
   const { id, ...info } = payable;
   const { data } = await api.patch(`/integrations/payable/${id}`, info);
 
