@@ -75,8 +75,8 @@ const PayableDetails = ({ params }: PayableDetailsProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       id,
-      value: payable.value.toFixed(2).toString(),
-      emissionDate: new Date(payable.emissionDate),
+      value: payable?.value.toFixed(2).toString(),
+      emissionDate: new Date(payable?.emissionDate),
       assignor,
     },
   });
@@ -92,7 +92,7 @@ const PayableDetails = ({ params }: PayableDetailsProps) => {
       await handleUpdatePayable({
         ...formData,
         value: Number(value),
-        assignorId: payable.assignorId,
+        assignorId: payable?.assignorId,
       });
 
       setIsEdit(false);
@@ -177,9 +177,9 @@ const PayableDetails = ({ params }: PayableDetailsProps) => {
                     <p className="font-semibold text-sm">Cedente: </p>
                     <Link
                       className="underline decoration-dotted hover:text-[#005ee0]"
-                      href={`/assignor/${assignor.id}`}
+                      href={`/assignor/${assignor?.id}`}
                     >
-                      {assignor.name}
+                      {assignor?.name}
                     </Link>
                   </div>
                 </div>
